@@ -16,21 +16,32 @@ logger.set(env.logLevel);
 
 const server = new Hono();
 
-// TODO: Cache policy
-// TODO: Debug log static
 server.use(
 	'*',
 	serveStatic({
 		root: './client/',
-		precompressed: true
+		precompressed: true,
+		onFound: (file, ctx) => {
+			logger.debug('(STATIC)', ctx.req.method, ctx.req.path);
+
+			if (ctx.req.path.startsWith('/assets/')) {
+				ctx.header('Cache-Control', 'max-age=31536000, public, immutable');
+			} else {
+				ctx.header('Cache-Control', 'max-age=3600, public, no-transform');
+			}
+
+			if (file.endsWith('.html')) {
+				ctx.header('Cache-Control', 'max-age=0, no-store');
+			}
+		}
 	})
 );
 
-server.all('*', async (req) => {
-	const pageContext = await renderPage({ urlOriginal: req.req.url });
-	const response = pageContext.httpResponse;
+server.all('*', async (ctx) => {
+	logger.debug('(DYNAMIC)', ctx.req.method, ctx.req.path);
 
-	logger.debug('(DYNAMIC)', req.req.method, req.req.path);
+	const pageContext = await renderPage({ urlOriginal: ctx.req.url });
+	const response = pageContext.httpResponse;
 
 	const { readable, writable } = new TransformStream();
 
