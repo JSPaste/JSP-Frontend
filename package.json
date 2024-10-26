@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "bun run build:server",
-		"build:server": "rm -rf ./dist/ && bun vite build && bun run script:standalone && bun run script:minify && bun run script:compress",
+		"build:server": "rm -rf ./dist/ && bun vite build && bun run script:standalone && bun run script:compress",
 		"clean:git:all": "bun run clean:git:untracked && bun run clean:git:gc && bun run clean:git:hooks",
 		"clean:git:all:force": "bun run clean:git:untracked:force && bun run clean:git:gc && bun run clean:git:hooks",
 		"clean:git:gc": "git gc --aggressive --prune",
@@ -21,7 +21,6 @@
 		"lint:biome": "bun biome lint",
 		"lint:tsc": "bun tsc --noEmit",
 		"script:compress": "bun run ./scripts/compress.ts",
-		"script:minify": "bun run ./scripts/minify.ts",
 		"script:standalone": "bun run ./scripts/standalone.ts",
 		"start": "bun run start:server",
 		"start:dev": "bun vite",

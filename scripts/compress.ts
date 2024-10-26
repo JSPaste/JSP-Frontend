@@ -1,4 +1,5 @@
 import { brotliCompressSync, gzipSync } from 'node:zlib';
+import { logger } from '@x-util/logger.ts';
 import { findFiles, writeFile } from './utils.ts';
 
 const rootClientDirectory = './dist/client/';
@@ -9,15 +10,15 @@ await Promise.all(
 	rootClientFiles.map(async (file) => {
 		const fileContent = await Bun.file(file).arrayBuffer();
 
-		console.debug('[COMPRESS] Compressing:', file);
+		logger.info('[BUILD] Compressing:', file);
 
 		await writeFile(
 			`${file}.gz`,
 			gzipSync(fileContent, {
 				level: 9
-			}).buffer
+			})
 		);
 
-		await writeFile(`${file}.br`, brotliCompressSync(fileContent).buffer);
+		await writeFile(`${file}.br`, brotliCompressSync(fileContent));
 	})
 );
