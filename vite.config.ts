@@ -20,8 +20,8 @@ export default {
 		tailwindcss(),
 		solid(),
 		vike({
-			// Other static redirects on "server.ts"...
 			redirects: {
+				'/github': 'https://github.com/jspaste',
 				// TODO: Expose Backend API route locations
 				'/@documentName/r': '/api/document/@documentName/raw',
 				'/@documentName/raw': '/api/document/@documentName/raw'

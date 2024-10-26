@@ -98,9 +98,6 @@ const frontend = serve({
 			headers: response.headers
 		});
 	},
-	static: {
-		'/github': Response.redirect('https://github.com/jspaste', 301)
-	},
 	port: env.port
 });
 
