@@ -12,11 +12,11 @@ const buildStandalone = async () => {
 		entrypoints: serverEntrypoint,
 		target: 'bun',
 		outdir: serverOutDirAbs,
-		naming: 'index.js',
 		format: 'esm',
+		naming: 'index.js',
 		splitting: false,
 		packages: 'bundle',
-		sourcemap: 'none',
+		sourcemap: 'inline',
 		minify: true
 	});
 
