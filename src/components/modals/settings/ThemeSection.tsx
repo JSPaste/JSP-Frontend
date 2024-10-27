@@ -14,7 +14,7 @@ export default function ThemeSection() {
 							<input
 								type='radio'
 								name='theme-radio'
-								class='radio theme-controller'
+								class='radio radio-primary theme-controller'
 								checked={id === theme()}
 								value={id}
 								onChange={() => setTheme(id as ThemeKeys)}

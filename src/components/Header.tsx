@@ -15,7 +15,7 @@ export default function Header(props: HeaderProps) {
 				label={`Ln ${props.cursor().line.toString().padStart(2, '0')} Col ${props.cursor().column.toString().padStart(2, '0')}`}
 			/>
 			<HeaderLabel label={`Lang ${language()}`} />
-			<span class='flex-auto' />
+			<span class='grow' />
 			<div class='flex max-sm:hidden'>
 				{/* TODO: Expose Backend API route location */}
 				<HeaderLabel label='API' icon={<IconCrane size={12} />} onClick={() => window.open('/api/docs')} />

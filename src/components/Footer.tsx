@@ -25,7 +25,7 @@ export default function Footer(props: FooterProps) {
 
 	return (
 		<div class='flex gap-2 p-2 bg-base-200'>
-			<span class='flex-auto' />
+			<span class='grow' />
 			<FooterButton
 				icon={<IconDeviceFloppy size={20} />}
 				label={props.value() ? 'Save' : 'You need to write something to save!'}
