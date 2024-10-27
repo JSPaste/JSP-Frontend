@@ -24,8 +24,8 @@ export default function Footer(props: FooterProps) {
 	};
 
 	return (
-		<div class='flex gap-3 pt-2 pb-2 pl-2.5 pr-2.5 bg-base-200'>
-			<div class='flex-auto' />
+		<div class='flex gap-2 p-2 bg-base-200'>
+			<span class='flex-auto' />
 			<FooterButton
 				icon={<IconDeviceFloppy size={20} />}
 				label={props.value() ? 'Save' : 'You need to write something to save!'}

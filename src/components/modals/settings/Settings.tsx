@@ -7,8 +7,7 @@ export default function Settings() {
 		<Portal>
 			<dialog id='modal_settings' class='modal modal-bottom sm:modal-middle'>
 				<div class='modal-box flex flex-col bg-base-100'>
-					<h3 class='font-bold text-lg'>SETTINGS</h3>
-					<div class='divider m-0.5' />
+					<h3 class='font-bold text-lg mb-4'>SETTINGS</h3>
 					<div class='flex flex-col gap-4'>
 						<ThemeSection />
 						<LanguageSection />

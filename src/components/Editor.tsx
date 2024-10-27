@@ -149,5 +149,5 @@ export default function Editor(props: EditorProps) {
 		setEditorView(undefined);
 	});
 
-	return <div ref={setContainer} class='flex-grow overflow-hidden' />;
+	return <div ref={setContainer} class='flex-auto overflow-hidden' />;
 }
