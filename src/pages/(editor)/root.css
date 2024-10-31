@@ -2,7 +2,7 @@
 
 @plugin "daisyui" {
 	/* biome-ignore lint/correctness/noUnknownProperty: test */
-	logs: true;
+	logs: false;
 	/* biome-ignore lint/correctness/noUnknownProperty: test */
 	themes: dark, light;
 }
