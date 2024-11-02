@@ -5,6 +5,8 @@
 	"license": "EUPL-1.2",
 	"type": "module",
 	"scripts": {
+		"analyse:bundle": "bun run analyze:bundle",
+		"analyze:bundle": "rm -rf ./dist/ && bun vite-bundle-visualizer --sourcemap --output ./dist/bundle.html",
 		"build": "bun run build:server",
 		"build:server": "rm -rf ./dist/ && bun vite build && bun run script:standalone && bun run script:compress",
 		"clean:git:all": "bun run clean:git:untracked && bun run clean:git:gc && bun run clean:git:hooks",
@@ -70,7 +72,8 @@
 	"devDependencies": {
 		"@biomejs/biome": "~1.9.4",
 		"lefthook": "~1.8.2",
-		"sort-package-json": "~2.10.1"
+		"sort-package-json": "~2.10.1",
+		"vite-bundle-visualizer": "~1.2.1"
 	},
 	"trustedDependencies": [
 		"@biomejs/biome",
