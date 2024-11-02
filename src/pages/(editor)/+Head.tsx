@@ -1,6 +1,6 @@
 import { siteManifest } from '@x-page/manifest';
 import { onMount } from 'solid-js';
-import './root.css';
+import './editor.css';
 
 export default function () {
 	onMount(() => {
