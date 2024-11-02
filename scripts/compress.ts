@@ -9,15 +9,15 @@ await Promise.all(
 	rootClientFiles.map(async (file) => {
 		const fileContent = await Bun.file(file).arrayBuffer();
 
-		console.debug('[COMPRESS] Compressing:', file);
+		console.info('[BUILD] Compressing:', file);
 
 		await writeFile(
 			`${file}.gz`,
 			gzipSync(fileContent, {
 				level: 9
-			}).buffer
+			})
 		);
 
-		await writeFile(`${file}.br`, brotliCompressSync(fileContent).buffer);
+		await writeFile(`${file}.br`, brotliCompressSync(fileContent));
 	})
 );

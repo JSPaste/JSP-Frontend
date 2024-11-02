@@ -46,7 +46,7 @@ export default function ThemeSection() {
 					<For each={Object.entries(Themes).slice(currentIndex(), currentIndex() + maxColumns())}>
 						{([id, name]) => (
 							<input
-								checked={theme() === id}
+								checked={id === theme()}
 								type='radio'
 								name='theme-button'
 								class='btn theme-controller join-horizontal bg-base-200'

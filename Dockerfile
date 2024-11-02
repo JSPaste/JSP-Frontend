@@ -2,7 +2,7 @@
 FROM docker.io/oven/bun:1-distroless
 WORKDIR /frontend/
 
-COPY --chown=nonroot ./dist ./
+COPY --chown=nonroot ./dist/ ./
 COPY --chown=nonroot ./LICENSE ./
 
 LABEL org.opencontainers.image.url="https://jspaste.eu" \

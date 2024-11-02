@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+	/* biome-ignore lint/correctness/noUnknownProperty: test */
+	logs: false;
+	/* biome-ignore lint/correctness/noUnknownProperty: test */
+	themes: dark, light;
+}
+
+@plugin "daisyui/theme" {
+	/* biome-ignore lint/correctness/noUnknownProperty: test */
+	name: "default";
+	/* biome-ignore lint/correctness/noUnknownProperty: test */
+	default: true;
+	color-scheme: dark;
+	--color-base-100: #202020;
+	--color-base-200: #1a1a1a;
+	--color-base-300: #151515;
+	--color-base-content: #cdcdcd;
+
+	--color-primary: #ffe184;
+	--color-primary-content: #161206;
+
+	--color-secondary: #202020;
+	--color-secondary-content: #cdcdcd;
+
+	--color-accent: #303030;
+	--color-accent-content: #d1d1d1;
+
+	--color-neutral: #202020;
+	--color-neutral-content: #cdcdcd;
+
+	--color-info: #5954ef;
+	--color-info-content: #d9dfff;
+
+	--color-success: #70ef54;
+	--color-success-content: #041402;
+
+	--color-warning: #efd554;
+	--color-warning-content: #141002;
+
+	--color-error: #ef5454;
+	--color-error-content: #140202;
+
+	--radius-badge: 1.9rem;
+	--radius-btn: .375rem;
+	--radius-box: .5rem;
+}
+
+:root {
+	isolation: isolate;
+	user-select: none;
+}
