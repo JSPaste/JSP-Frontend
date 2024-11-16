@@ -12,7 +12,9 @@ export default function LanguageSection() {
 				onChange={(e) => setLanguage(e.target.value as LangKeys)}
 				value={language()}
 			>
-				<For each={Object.keys(langs).sort()}>{(lang) => <option>{lang}</option>}</For>
+				<For each={Object.keys(langs).sort((a, b) => a.localeCompare(b))}>
+					{(lang) => <option>{lang}</option>}
+				</For>
 			</select>
 		</div>
 	);

@@ -5,12 +5,12 @@ export const langs = {
 	html: () => import('@codemirror/lang-html').then((lang) => lang.html),
 	java: () => import('@codemirror/lang-java').then((lang) => lang.java),
 	javascript: () => import('@codemirror/lang-javascript').then((lang) => lang.javascript),
-	typescript: () => import('@codemirror/lang-javascript').then((lang) => lang.javascript),
 	json: () => import('@codemirror/lang-json').then((lang) => lang.json),
 	markdown: () => import('@codemirror/lang-markdown').then((lang) => lang.markdown),
 	php: () => import('@codemirror/lang-php').then((lang) => lang.php),
 	python: () => import('@codemirror/lang-python').then((lang) => lang.python),
 	rust: () => import('@codemirror/lang-rust').then((lang) => lang.rust),
+	typescript: () => import('@codemirror/lang-javascript').then((lang) => lang.javascript),
 	xml: () => import('@codemirror/lang-xml').then((lang) => lang.xml),
 	yaml: () => import('@codemirror/lang-yaml').then((lang) => lang.yaml)
 } as const;
