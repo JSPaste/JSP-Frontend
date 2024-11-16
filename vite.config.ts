@@ -5,8 +5,7 @@ import type { UserConfig } from 'vite';
 
 export default {
 	build: {
-		reportCompressedSize: false,
-		minify: 'terser'
+		reportCompressedSize: false
 	},
 	resolve: {
 		alias: {

@@ -24,6 +24,7 @@ const buildStandalone = async () => {
 	}
 
 	// Cleanup
+	// TODO: https://github.com/oven-sh/bun/pull/15167
 	await $`rm -rf ./dist/server/assets/`;
 	await $`rm -rf ./dist/server/chunks/`;
 	await $`rm -rf ./dist/server/entries/`;
