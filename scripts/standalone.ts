@@ -29,6 +29,8 @@ const buildStandalone = async () => {
 	await $`rm -rf ./dist/server/chunks/`;
 	await $`rm -rf ./dist/server/entries/`;
 	await $`rm -rf ./dist/server/*.mjs`;
+
+	await $`rm -rf ./dist/client/bundle.html`;
 };
 
 console.info('[BUILD] Creating standalone...');

@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"analyse:bundle": "bun run analyze:bundle",
-		"analyze:bundle": "rm -rf ./dist/ && bun vite-bundle-visualizer --sourcemap --output ./dist/bundle.html",
+		"analyze:bundle": "rm -rf ./dist/ && bun vite build && mv ./dist/client/bundle.html ./dist/client.bundle.html && mv ./dist/server/bundle.html ./dist/server.bundle.html",
 		"build": "bun run build:server",
 		"build:server": "rm -rf ./dist/ && bun vite build && bun run script:standalone && bun run script:compress",
 		"clean:git:all": "bun run clean:git:untracked && bun run clean:git:gc && bun run clean:git:hooks",
@@ -52,27 +52,27 @@
 		"@solid-primitives/scheduled": "~1.4.4",
 		"@solid-primitives/storage": "~4.2.1",
 		"@tabler/icons-solidjs": "~3.22.0",
-		"@tailwindcss/postcss": "4.0.0-alpha.34",
-		"@types/bun": "~1.1.13",
-		"@types/node": "~22.9.0",
 		"@uiw/codemirror-extensions-hyper-link": "~4.23.6",
 		"@uiw/codemirror-themes": "~4.23.6",
-		"daisyui": "5.0.0-alpha.37",
+		"daisyui": "5.0.0-alpha.38",
 		"env-var": "~7.5.0",
-		"hono": "~4.6.10",
-		"postcss": "~8.4.49",
+		"hono": "~4.6.11",
 		"solid-js": "~1.9.3",
-		"tailwindcss": "4.0.0-alpha.34",
-		"typescript": "~5.6.3",
-		"vike": "~0.4.201",
+		"vike": "~0.4.204",
 		"vike-solid": "~0.7.6",
 		"vite": "~5.4.11"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "~1.9.4",
-		"lefthook": "~1.8.2",
-		"sort-package-json": "~2.10.1",
-		"vite-bundle-visualizer": "~1.2.1"
+		"@tailwindcss/vite": "4.0.0-alpha.35",
+		"@types/bun": "^1.1.13",
+		"browserslist": "^4.24.2",
+		"lefthook": "~1.8.4",
+		"rollup-plugin-visualizer": "~5.12.0",
+		"sort-package-json": "~2.11.0"
+	},
+	"peerDependencies": {
+		"typescript": "5.5.4"
 	},
 	"trustedDependencies": [
 		"@biomejs/biome",
