@@ -53,7 +53,7 @@ server.all('*', async (ctx) => {
 	});
 });
 
-// TODO: 103 Early Hints -> https://github.com/oven-sh/bun/issues/8690
+// TODO: https://github.com/oven-sh/bun/issues/8690
 const frontend = serve({
 	fetch: server.fetch,
 	port: env.port

@@ -17,8 +17,11 @@ export default function Header(props: HeaderProps) {
 			<HeaderLabel label={`Lang ${language()}`} />
 			<span class='grow' />
 			<div class='flex max-sm:hidden'>
-				{/* TODO: Expose Backend API route location */}
-				<HeaderLabel label='API' icon={<IconCrane size={12} />} onClick={() => window.open('/api/docs')} />
+				<HeaderLabel
+					label='API'
+					icon={<IconCrane size={12} />}
+					onClick={() => window.open('https://github.com/jspaste/backend/tree/stable?tab=readme-ov-file#api')}
+				/>
 				<HeaderLabel
 					label='Source'
 					icon={<IconCode size={12} />}

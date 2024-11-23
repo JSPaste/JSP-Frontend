@@ -1,18 +1,7 @@
 import { siteManifest } from '@x-page/manifest';
-import { onMount } from 'solid-js';
 import './editor.css';
 
 export default function () {
-	onMount(() => {
-		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker.getRegistrations().then((registrations) => {
-				for (const registration of registrations) {
-					registration.unregister();
-				}
-			});
-		}
-	});
-
 	return (
 		<>
 			<meta name='theme-color' content='#FFE285' />
