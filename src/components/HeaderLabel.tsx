@@ -9,7 +9,7 @@ type HeaderLabelProps = {
 export default function HeaderLabel(props: HeaderLabelProps) {
 	return (
 		<div
-			class={`flex items-center gap-1 pl-2 pr-2 text-xs ${props.onClick ? 'hover:bg-base-100 hover:cursor-pointer' : ''}`}
+			class={`flex items-center gap-1 pl-2 pr-2 text-xs ${props.onClick ? 'hover:bg-base-300 hover:cursor-pointer' : ''}`}
 			onClick={props.onClick}
 			role={props.onClick && 'button'}
 		>

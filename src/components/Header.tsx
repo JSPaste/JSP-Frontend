@@ -10,7 +10,7 @@ type HeaderProps = {
 
 export default function Header(props: HeaderProps) {
 	return (
-		<div class='flex min-h-6 pl-2 pr-2 bg-base-200'>
+		<div class='flex min-h-6 pl-2 pr-2 bg-base-100'>
 			<HeaderLabel
 				label={`Ln ${props.cursor().line.toString().padStart(2, '0')} Col ${props.cursor().column.toString().padStart(2, '0')}`}
 			/>

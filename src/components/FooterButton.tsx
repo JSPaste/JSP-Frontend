@@ -13,7 +13,7 @@ export default function FooterButton(props: FooterButtonProps) {
 			<button
 				type='button'
 				aria-label={props.label}
-				class='btn btn-square btn-sm bg-base-100'
+				class='btn btn-square btn-sm bg-base-300'
 				onClick={props.onClick}
 				disabled={props.isDisabled ?? false}
 			>
