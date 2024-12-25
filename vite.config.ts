@@ -1,4 +1,7 @@
 import { resolve } from 'node:path';
+import tailwindcss from '@tailwindcss/vite';
+import browserslist from 'browserslist';
+import { browserslistToTargets } from 'lightningcss';
 import { visualizer } from 'rollup-plugin-visualizer';
 import solid from 'vike-solid/vite';
 import vike from 'vike/plugin';
@@ -7,18 +10,18 @@ import type { UserConfig } from 'vite';
 export default {
 	appType: 'custom',
 	build: {
-		reportCompressedSize: false
-		//cssMinify: 'lightningcss'
+		reportCompressedSize: false,
+		cssMinify: 'lightningcss'
 	},
 	css: {
-		transformer: 'postcss'
-		// TODO: @tailwindcss/vite fix build
-		//lightningcss: {
-		//	targets: browserslistToTargets(browserslist('defaults'))
-		//}
+		transformer: 'lightningcss',
+		lightningcss: {
+			targets: browserslistToTargets(browserslist('defaults'))
+		}
 	},
 	plugins: [
 		solid(),
+		tailwindcss(),
 		vike({
 			redirects: {
 				'/github': 'https://github.com/jspaste',
