@@ -9,10 +9,11 @@ LABEL org.opencontainers.image.url="https://jspaste.eu" \
       org.opencontainers.image.source="https://github.com/jspaste/frontend" \
       org.opencontainers.image.title="@jspaste/frontend" \
       org.opencontainers.image.description="The frontend for JSPaste" \
-      org.opencontainers.image.documentation="https://docs.jspaste.eu" \
       org.opencontainers.image.licenses="EUPL-1.2"
 
 ENV NODE_ENV=production
+
+USER nonroot
 
 EXPOSE 3000
 

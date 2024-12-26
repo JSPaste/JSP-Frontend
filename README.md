@@ -11,4 +11,4 @@ In case you are using an older browser than the ones listed, please do not open 
 - Safari >= 16
 
 *Last checked commit
-[`5982621`](https://github.com/JSPaste/Frontend/commit/59826216a47e08e0f150486b6cf983ba7cd8fa57) on 27 October 2024*
+[`f79a767`](https://github.com/jspaste/frontend/commit/f79a767b799fd8f6e90488f82751e8ada032321c) on 26 December 2024*
