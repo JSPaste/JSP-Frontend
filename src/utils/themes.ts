@@ -3,142 +3,119 @@ import { tags as t } from '@lezer/highlight';
 import createTheme from '@uiw/codemirror-themes';
 
 export enum Themes {
-	default = 'JSPaste',
 	dark = 'Dark',
 	light = 'Light'
 }
 
 export type ThemeKeys = keyof typeof Themes;
 
+const syntaxDark = {
+	invalid: 'oklch(70% 0.1 20)',
+	heading: 'oklch(70% 0.1 333)',
+	comment: 'oklch(65% 0 0)',
+	tag: 'oklch(80% 0.1 85)',
+	keyword: 'oklch(75% 0.1 50)',
+	type: 'oklch(75% 0.1 50)',
+	constant: 'oklch(70% 0.1 333)',
+	function: 'oklch(70% 0.1 333)',
+	variable: 'oklch(80% 0 0)',
+	class: 'oklch(80% 0 0)',
+	string: 'oklch(70% 0.1 150)',
+	number: 'oklch(70% 0.1 200)',
+	regexp: 'oklch(80% 0.1 200)'
+} as const;
+
+const syntaxLight = {
+	invalid: 'oklch(70% 0.2 20)',
+	heading: 'oklch(40% 0.2 333)',
+	comment: 'oklch(50% 0 0)',
+	tag: 'oklch(40% 0.2 250)',
+	keyword: 'oklch(40% 0.2 250)',
+	type: 'oklch(40% 0.2 250)',
+	constant: 'oklch(40% 0.2 333)',
+	function: 'oklch(40% 0.2 333)',
+	variable: 'oklch(10% 0 0)',
+	class: 'oklch(10% 0 0)',
+	string: 'oklch(40% 0.2 150)',
+	number: 'oklch(40% 0.2 250)',
+	regexp: 'oklch(50% 0.2 250)'
+} as const;
+
 export const editorThemes: Record<ThemeKeys, Extension> = {
-	default: createTheme({
-		settings: {
-			background: '#202020',
-			foreground: '#CDCDCD',
-			caret: '#FFE184',
-			selection: '#FFE18419',
-			selectionMatch: '#FFE18433',
-			gutterBackground: '#1A1A1A',
-			gutterForeground: '#838383',
-			gutterActiveForeground: '#CDCDCD',
-			lineHighlight: '#FFE18407'
-		},
-		styles: [
-			{
-				tag: [t.comment],
-				color: '#c8c5bb'
-			},
-			{
-				tag: [t.operator],
-				color: '#e8b000'
-			},
-			{
-				tag: [t.unit, t.punctuation],
-				color: '#c19200'
-			},
-			{
-				tag: [t.propertyName],
-				color: '#fcbe00'
-			},
-			{
-				tag: [t.bracket, t.variableName, t.emphasis, t.heading, t.tagName, t.className, t.namespace],
-				color: '#dee2e6'
-			},
-			{
-				tag: [t.typeName, t.atom, t.number, t.keyword, t.link, t.attributeName, t.quote],
-				color: '#FFE184'
-			},
-			{
-				tag: [t.number],
-				color: '#84b6ff'
-			},
-			{
-				tag: [t.string, t.url],
-				color: '#84ffb0'
-			}
-		],
-		theme: 'dark'
-	}),
 	dark: createTheme({
 		theme: 'dark',
 		settings: {
-			background: '#1e1e1e',
-			foreground: '#9cdcfe',
-			caret: '#c6c6c6',
-			selection: '#6199ff2f',
-			selectionMatch: '#72a1ff59',
-			lineHighlight: '#ffffff0f',
-			gutterBackground: '#1e1e1e',
-			gutterForeground: '#838383',
-			gutterActiveForeground: '#fff',
-			fontFamily: 'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace'
+			background: 'oklch(24% 0 0)',
+			foreground: 'oklch(85% 0 0)',
+			caret: 'oklch(91% 0.1175 92)',
+			selection: 'oklch(91% 0.1175 92 / 10%)',
+			selectionMatch: 'oklch(91% 0.1175 92 / 20%)',
+			lineHighlight: 'oklch(100% 0 0 / 3%)',
+			gutterBackground: 'oklch(20% 0 0)',
+			gutterForeground: 'oklch(60% 0 0)',
+			gutterActiveForeground: 'oklch(85% 0 0)'
 		},
 		styles: [
 			{
-				tag: [
-					t.keyword,
-					t.operatorKeyword,
-					t.modifier,
-					t.color,
-					t.constant(t.name),
-					t.standard(t.name),
-					t.standard(t.tagName),
-					t.special(t.brace),
-					t.atom,
-					t.bool,
-					t.special(t.variableName)
-				],
-				color: '#569cd6'
-			},
-			{
-				tag: [t.controlKeyword, t.moduleKeyword],
-				color: '#c586c0'
-			},
-			{
-				tag: [
-					t.name,
-					t.deleted,
-					t.character,
-					t.macroName,
-					t.propertyName,
-					t.variableName,
-					t.labelName,
-					t.definition(t.name)
-				],
-				color: '#9cdcfe'
+				tag: t.invalid,
+				color: syntaxDark.invalid
 			},
 			{
 				tag: t.heading,
 				fontWeight: 'bold',
-				color: '#9cdcfe'
+				color: syntaxDark.heading
 			},
 			{
-				tag: [t.typeName, t.className, t.tagName, t.number, t.changed, t.annotation, t.self, t.namespace],
-				color: '#4ec9b0'
+				tag: [t.comment, t.meta],
+				color: syntaxDark.comment
 			},
 			{
-				tag: [t.function(t.variableName), t.function(t.propertyName)],
-				color: '#dcdcaa'
+				tag: [t.annotation, t.tagName],
+				color: syntaxDark.tag
 			},
 			{
-				tag: [t.number],
-				color: '#b5cea8'
+				tag: [t.bool, t.keyword],
+				color: syntaxDark.keyword
 			},
 			{
-				tag: [t.operator, t.punctuation, t.separator, t.url, t.escape, t.regexp],
-				color: '#d4d4d4'
+				tag: [t.changed, t.modifier, t.namespace, t.self, t.typeName],
+				color: syntaxDark.type
 			},
 			{
-				tag: [t.regexp],
-				color: '#d16969'
+				tag: [t.constant(t.name), t.standard(t.name)],
+				color: syntaxDark.constant
 			},
 			{
-				tag: [t.special(t.string), t.processingInstruction, t.string, t.inserted],
-				color: '#ce9178'
+				tag: [t.function(t.variableName), t.labelName, t.propertyName],
+				color: syntaxDark.function
 			},
 			{
-				tag: [t.angleBracket],
-				color: '#808080'
+				tag: [
+					t.atom,
+					t.character,
+					t.deleted,
+					t.definition(t.name),
+					t.macroName,
+					t.name,
+					t.special(t.variableName)
+				],
+				color: syntaxDark.variable
+			},
+			{
+				tag: t.className,
+				color: syntaxDark.class
+			},
+			{
+				tag: [t.docComment, t.inserted, t.processingInstruction, t.special(t.string), t.string],
+				color: syntaxDark.string
+			},
+			{
+				tag: [t.color, t.number],
+				color: syntaxDark.number
+			},
+			{
+				tag: [t.escape, t.link, t.regexp, t.url],
+				color: syntaxDark.regexp
 			},
 			{
 				tag: t.strong,
@@ -149,104 +126,89 @@ export const editorThemes: Record<ThemeKeys, Extension> = {
 				fontStyle: 'italic'
 			},
 			{
-				tag: t.strikethrough,
-				textDecoration: 'line-through'
-			},
-			{
-				tag: [t.meta, t.comment],
-				color: '#6a9955'
-			},
-			{
 				tag: t.link,
-				color: '#6a9955',
 				textDecoration: 'underline'
 			},
 			{
-				tag: t.invalid,
-				color: '#ff0000'
+				tag: t.strikethrough,
+				textDecoration: 'line-through'
 			}
 		]
 	}),
 	light: createTheme({
 		theme: 'light',
 		settings: {
-			background: '#ffffff',
-			foreground: '#383a42',
-			caret: '#000',
-			selection: '#add6ff',
-			selectionMatch: '#a8ac94',
-			lineHighlight: '#f0f0f0',
-			gutterBackground: '#fff',
-			gutterForeground: '#237893',
-			gutterActiveForeground: '#0b216f',
-			fontFamily: 'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace'
+			background: 'oklch(100% 0 0)',
+			foreground: 'oklch(25% 0 0)',
+			caret: 'oklch(0% 0 0)',
+			selection: 'oklch(91% 0.1175 92 / 20%)',
+			selectionMatch: 'oklch(91% 0.1175 92 / 30%)',
+			lineHighlight: 'oklch(0% 0 0 / 3%)',
+			gutterBackground: 'oklch(97% 0 0)',
+			gutterForeground: 'oklch(60% 0 0)',
+			gutterActiveForeground: 'oklch(25% 0 0)'
 		},
 		styles: [
 			{
-				tag: [
-					t.keyword,
-					t.operatorKeyword,
-					t.modifier,
-					t.color,
-					t.constant(t.name),
-					t.standard(t.name),
-					t.standard(t.tagName),
-					t.special(t.brace),
-					t.atom,
-					t.bool,
-					t.special(t.variableName)
-				],
-				color: '#0000ff'
-			},
-			{
-				tag: [t.moduleKeyword, t.controlKeyword],
-				color: '#af00db'
-			},
-			{
-				tag: [
-					t.name,
-					t.deleted,
-					t.character,
-					t.macroName,
-					t.propertyName,
-					t.variableName,
-					t.labelName,
-					t.definition(t.name)
-				],
-				color: '#0070c1'
+				tag: t.invalid,
+				color: syntaxLight.invalid
 			},
 			{
 				tag: t.heading,
 				fontWeight: 'bold',
-				color: '#0070c1'
+				color: syntaxLight.heading
 			},
 			{
-				tag: [t.typeName, t.className, t.tagName, t.number, t.changed, t.annotation, t.self, t.namespace],
-				color: '#267f99'
+				tag: [t.comment, t.meta],
+				color: syntaxLight.comment
 			},
 			{
-				tag: [t.function(t.variableName), t.function(t.propertyName)],
-				color: '#795e26'
+				tag: [t.annotation, t.tagName],
+				color: syntaxLight.tag
 			},
 			{
-				tag: [t.number],
-				color: '#098658'
+				tag: [t.bool, t.keyword],
+				color: syntaxLight.keyword
 			},
 			{
-				tag: [t.operator, t.punctuation, t.separator, t.url, t.escape, t.regexp],
-				color: '#383a42'
+				tag: [t.changed, t.modifier, t.namespace, t.self, t.typeName],
+				color: syntaxLight.type
 			},
 			{
-				tag: [t.regexp],
-				color: '#af00db'
+				tag: [t.constant(t.name), t.standard(t.name)],
+				color: syntaxLight.constant
 			},
 			{
-				tag: [t.special(t.string), t.processingInstruction, t.string, t.inserted],
-				color: '#a31515'
+				tag: [t.function(t.variableName), t.labelName, t.propertyName],
+				color: syntaxLight.function
 			},
 			{
-				tag: [t.angleBracket],
-				color: '#383a42'
+				tag: [
+					t.atom,
+					t.character,
+					t.deleted,
+					t.definition(t.name),
+					t.macroName,
+					t.name,
+					t.special(t.variableName)
+				],
+				color: syntaxLight.variable
+			},
+			{
+				tag: t.className,
+				color: syntaxLight.class
+			},
+			{
+				tag: [t.docComment, t.inserted, t.processingInstruction, t.special(t.string), t.string],
+				color: syntaxLight.string
+			},
+			{
+				tag: [t.color, t.number],
+				color: syntaxLight.number
+			},
+			{
+				tag: [t.escape, t.link, t.regexp, t.url],
+				color: syntaxLight.regexp
 			},
 			{
 				tag: t.strong,
@@ -257,22 +219,13 @@ export const editorThemes: Record<ThemeKeys, Extension> = {
 				fontStyle: 'italic'
 			},
 			{
-				tag: t.strikethrough,
-				textDecoration: 'line-through'
-			},
-			{
-				tag: [t.meta, t.comment],
-				color: '#008000'
-			},
-			{
 				tag: t.link,
-				color: '#4078f2',
 				textDecoration: 'underline'
 			},
 			{
-				tag: t.invalid,
-				color: '#e45649'
+				tag: t.strikethrough,
+				textDecoration: 'line-through'
 			}
 		]
 	})
-};
+} as const;

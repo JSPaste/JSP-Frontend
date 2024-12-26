@@ -3,49 +3,99 @@
 @plugin "daisyui" {
 	/* biome-ignore lint/correctness/noUnknownProperty: Missing proper Tailwind CSS 4 support */
 	logs: false;
-	/* biome-ignore lint/correctness/noUnknownProperty: Missing proper Tailwind CSS 4 support */
-	themes: dark, light;
 }
 
 @plugin "daisyui/theme" {
 	/* biome-ignore lint/correctness/noUnknownProperty: Missing proper Tailwind CSS 4 support */
-	name: default;
+	name: dark;
 	/* biome-ignore lint/correctness/noUnknownProperty: Missing proper Tailwind CSS 4 support */
-	default: true;
+	default: false;
+	/* biome-ignore lint/correctness/noUnknownProperty: Missing proper Tailwind CSS 4 support */
+	prefersdark: true;
 	color-scheme: dark;
 
-	--color-base-100: #1a1a1a;
-	--color-base-200: #202020;
-	--color-base-300: #2a2a2a;
-	--color-base-content: #cdcdcd;
+	--color-base-100: oklch(20% 0 0);
+	--color-base-200: oklch(26% 0 0);
+	--color-base-300: oklch(37% 0 0);
+	--color-base-content: oklch(100% 0 0);
 
-	--color-primary: #ffe184;
-	--color-primary-content: #cdcdcd;
+	--color-primary: oklch(91% 0.1175 92);
+	--color-primary-content: oklch(26% 0 0);
 
-	--color-secondary: #202020;
-	--color-secondary-content: #cdcdcd;
+	--color-secondary: oklch(26% 0 0);
+	--color-secondary-content: oklch(100% 0 0);
 
-	--color-accent: #303030;
-	--color-accent-content: #d1d1d1;
+	--color-accent: oklch(91% 0.1175 92);
+	--color-accent-content: oklch(26% 0 0);
 
-	--color-neutral: #202020;
-	--color-neutral-content: #cdcdcd;
+	--color-neutral: oklch(26% 0 0);
+	--color-neutral-content: oklch(100% 0 0);
 
-	--color-info: #5954ef;
-	--color-info-content: #d9dfff;
+	--color-info: oklch(60% 0.2 270);
+	--color-info-content: oklch(100% 0 0);
 
-	--color-success: #70ef54;
-	--color-success-content: #041402;
+	--color-success: oklch(70% 0.2 160);
+	--color-success-content: oklch(0% 0 0);
 
-	--color-warning: #efd554;
-	--color-warning-content: #141002;
+	--color-warning: oklch(80% 0.2 100);
+	--color-warning-content: oklch(0% 0 0);
 
-	--color-error: #ef5454;
-	--color-error-content: #140202;
+	--color-error: oklch(70% 0.2 20);
+	--color-error-content: oklch(0% 0 0);
 
-	--radius-selector: .5rem;
+	--radius-selector: .25rem;
 	--radius-field: .25rem;
-	--radius-box: .5rem;
+	--radius-box: .25rem;
+
+	--size-selector: .25rem;
+	--size-field: .25rem;
+
+	--border: 1px;
+	--depth: 0;
+	--noise: 0;
+}
+
+@plugin "daisyui/theme" {
+	/* biome-ignore lint/correctness/noUnknownProperty: Missing proper Tailwind CSS 4 support */
+	name: light;
+	/* biome-ignore lint/correctness/noUnknownProperty: Missing proper Tailwind CSS 4 support */
+	default: false;
+	/* biome-ignore lint/correctness/noUnknownProperty: Missing proper Tailwind CSS 4 support */
+	prefersdark: false;
+	color-scheme: light;
+
+	--color-base-100: oklch(97% 0 0);
+	--color-base-200: oklch(92% 0 0);
+	--color-base-300: oklch(87% 0 0);
+	--color-base-content: oklch(0% 0 0);
+
+	--color-primary: oklch(91% 0.1175 92);
+	--color-primary-content: oklch(26% 0 0);
+
+	--color-secondary: oklch(92% 0 0);
+	--color-secondary-content: oklch(0% 0 0);
+
+	--color-accent: oklch(91% 0.1175 92);
+	--color-accent-content: oklch(26% 0 0);
+
+	--color-neutral: oklch(92% 0 0);
+	--color-neutral-content: oklch(0% 0 0);
+
+	--color-info: oklch(60% 0.2 270);
+	--color-info-content: oklch(100% 0 0);
+
+	--color-success: oklch(70% 0.2 160);
+	--color-success-content: oklch(0% 0 0);
+
+	--color-warning: oklch(80% 0.2 100);
+	--color-warning-content: oklch(0% 0 0);
+
+	--color-error: oklch(70% 0.2 20);
+	--color-error-content: oklch(0% 0 0);
+
+	--radius-selector: .25rem;
+	--radius-field: .25rem;
+	--radius-box: .25rem;
 
 	--size-selector: .25rem;
 	--size-field: .25rem;

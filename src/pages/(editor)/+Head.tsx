@@ -4,7 +4,7 @@ import './editor.css';
 export default function () {
 	return (
 		<>
-			<meta name='theme-color' content='#FFE285' />
+			<meta name='theme-color' content='#fddf82' />
 
 			<meta property='og:type' content={siteManifest.type} />
 			<meta property='og:url' content={siteManifest.baseURL} />
