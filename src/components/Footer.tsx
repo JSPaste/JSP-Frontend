@@ -1,17 +1,15 @@
 import { IconAlignJustified, IconDeviceFloppy, IconPencil, IconSettings } from '@tabler/icons-solidjs';
-import FooterButton from '@x-component/FooterButton';
-import Settings from '@x-component/modals/settings/Settings';
-import type { Accessor, Setter } from 'solid-js';
+import FooterButton from '#component/FooterButton';
+import Settings from '#component/modals/settings/Settings';
+import { useEditorContext } from '#util/useEditorContext.ts';
 
 type FooterProps = {
 	documentName?: string;
-	enableEdit: boolean;
-	isEditing: Accessor<boolean>;
-	setIsEditing: Setter<boolean>;
-	value: Accessor<string>;
 };
 
 export default function Footer(props: FooterProps) {
+	const ctx = useEditorContext();
+
 	const handleSave = async () => {
 		alert('Saved! (NOT IMPLEMENTED)');
 	};
@@ -21,21 +19,21 @@ export default function Footer(props: FooterProps) {
 			<span class='grow' />
 			<FooterButton
 				icon={<IconDeviceFloppy size={20} />}
-				label={props.value() ? 'Save' : 'You need to write something to save!'}
+				label={ctx.value() ? 'Save' : 'You need to write something to save!'}
 				onClick={handleSave}
-				isDisabled={!props.value()}
+				isDisabled={!ctx.value()}
 			/>
 			<FooterButton
 				icon={<IconPencil size={20} />}
 				label='Edit'
-				onClick={() => props.setIsEditing(true)}
-				isDisabled={props.isEditing() || !props.enableEdit}
+				onClick={() => ctx.setIsEditing(true)}
+				isDisabled={ctx.isEditing() || !ctx.enableEdit}
 			/>
 			<FooterButton
 				icon={<IconAlignJustified size={20} />}
 				label='View Raw'
 				onClick={() => window.open(`/${props.documentName}/raw`)}
-				isDisabled={!props.documentName || props.isEditing()}
+				isDisabled={!props.documentName || ctx.isEditing()}
 			/>
 			<FooterButton
 				icon={<IconSettings size={20} />}

@@ -1,6 +1,6 @@
-import { type LangKeys, langs } from '@x-util/langs';
-import { language, setLanguage } from '@x-util/store';
 import { For } from 'solid-js';
+import { type LangKeys, langs } from '#util/langs';
+import { language, setLanguage } from '#util/store';
 
 export default function LanguageSection() {
 	return (

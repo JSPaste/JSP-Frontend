@@ -1,9 +1,8 @@
-import { LogLevels, logger } from '@x-util/logger.ts';
 import { serve } from 'bun';
 import { get as envvar } from 'env-var';
+import { Hono } from 'hono';
 import { serveStatic } from 'hono/bun';
-import { Hono } from 'hono/tiny';
-import { renderPage } from 'vike/server';
+import { LogLevels, logger } from '#util/logger.ts';
 
 process.on('SIGTERM', async () => await frontend.stop());
 
@@ -19,7 +18,7 @@ const server = new Hono();
 server.use(
 	'*',
 	serveStatic({
-		root: './client/',
+		root: './www/',
 		precompressed: true,
 		onFound: (file, ctx) => {
 			logger.debug('(STATIC)', ctx.req.method, ctx.req.path);
@@ -36,22 +35,6 @@ server.use(
 		}
 	})
 );
-
-server.all('*', async (ctx) => {
-	logger.debug('(DYNAMIC)', ctx.req.method, ctx.req.path);
-
-	const pageContext = await renderPage({ urlOriginal: ctx.req.url });
-	const response = pageContext.httpResponse;
-
-	const { readable, writable } = new TransformStream();
-
-	response.pipe(writable);
-
-	return new Response(readable, {
-		status: response.statusCode,
-		headers: response.headers
-	});
-});
 
 // TODO: https://github.com/oven-sh/bun/issues/8690
 const frontend = serve({

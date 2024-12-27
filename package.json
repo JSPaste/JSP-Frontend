@@ -6,16 +6,9 @@
 	"type": "module",
 	"scripts": {
 		"analyse:bundle": "bun run analyze:bundle",
-		"analyze:bundle": "rm -rf ./dist/ && bun vite build && mv ./dist/client/bundle.html ./dist/client.bundle.html && mv ./dist/server/bundle.html ./dist/server.bundle.html",
+		"analyze:bundle": "rm -rf ./dist/ && bun vite build && mv ./dist/www/bundle.html ./dist/client.bundle.html",
 		"build": "bun run build:server",
 		"build:server": "rm -rf ./dist/ && bun vite build && bun run script:server && bun run script:compress",
-		"build:standalone": "rm -rf ./dist/ && bun vite build && bun run script:standalone && bun run script:compress",
-		"build:standalone:darwin-arm64": "bun run build:standalone -- --target=bun-darwin-arm64",
-		"build:standalone:linux-glibc-amd64": "bun run build:standalone -- --target=bun-linux-x64-modern",
-		"build:standalone:linux-glibc-arm64": "bun run build:standalone -- --target=bun-linux-arm64",
-		"build:standalone:linux-musl-amd64": "bun run build:standalone -- --target=bun-linux-x64-modern-musl",
-		"build:standalone:linux-musl-arm64": "bun run build:standalone -- --target=bun-linux-arm64-musl",
-		"build:standalone:windows-amd64": "bun run build:standalone -- --target=bun-windows-x64-modern",
 		"clean:git:all": "bun run clean:git:untracked && bun run clean:git:gc && bun run clean:git:hooks",
 		"clean:git:all:force": "bun run clean:git:untracked:force && bun run clean:git:gc && bun run clean:git:hooks",
 		"clean:git:gc": "git gc --aggressive --prune",
@@ -31,15 +24,11 @@
 		"lint:tsc": "bun tsc --noEmit",
 		"script:compress": "bun run ./scripts/compress.ts",
 		"script:server": "bun run ./scripts/server.ts",
-		"script:standalone": "bun run ./scripts/standalone.ts",
 		"start": "bun run start:server",
 		"start:dev": "bun vite",
 		"start:rebuild": "bun run build:server && bun run start:server",
-		"start:server": "NODE_ENV=production bun run --cwd=./dist/ ./server/index.js"
+		"start:server": "NODE_ENV=production bun run --cwd=./dist/ ./index.js"
 	},
-	"browserslist": [
-		"defaults"
-	],
 	"dependencies": {
 		"@codemirror/autocomplete": "~6.18.4",
 		"@codemirror/commands": "~6.8.0",
@@ -62,29 +51,27 @@
 		"@solid-primitives/media": "~2.2.9",
 		"@solid-primitives/scheduled": "~1.4.4",
 		"@solid-primitives/storage": "~4.2.1",
+		"@solidjs/router": "~0.15.2",
 		"@tabler/icons-solidjs": "~3.28.0",
-		"@tailwindcss/postcss": "4.0.0-beta.9",
 		"@uiw/codemirror-extensions-hyper-link": "~4.23.7",
 		"@uiw/codemirror-themes": "~4.23.7",
 		"daisyui": "5.0.0-beta.1",
 		"env-var": "~7.5.0",
 		"hono": "~4.6.14",
 		"solid-js": "~1.9.3",
-		"tailwindcss": "4.0.0-beta.9",
-		"vike": "~0.4.210",
-		"vike-solid": "~0.7.8",
-		"vite": "~6.0.6"
+		"tailwindcss": "4.0.0-beta.9"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "~1.9.4",
+		"@tailwindcss/vite": "4.0.0-beta.8",
 		"@types/bun": "^1.1.14",
-		"autoprefixer": "~10.4.20",
 		"browserslist": "^4.24.3",
 		"lefthook": "~1.10.1",
 		"lightningcss": "~1.29.0",
-		"postcss": "~8.4.49",
 		"rollup-plugin-visualizer": "~5.14.0",
-		"sort-package-json": "~2.12.0"
+		"sort-package-json": "~2.12.0",
+		"vite": "~6.0.6",
+		"vite-plugin-solid": "~2.11.0"
 	},
 	"peerDependencies": {
 		"typescript": "~5.5.4"

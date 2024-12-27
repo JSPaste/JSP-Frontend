@@ -1,36 +1,34 @@
 import { resolve } from 'node:path';
+import tailwindcss from '@tailwindcss/vite';
+import browserslist from 'browserslist';
+import { browserslistToTargets } from 'lightningcss';
 import { visualizer } from 'rollup-plugin-visualizer';
-import solid from 'vike-solid/vite';
-import vike from 'vike/plugin';
 import type { UserConfig } from 'vite';
+import solid from 'vite-plugin-solid';
 
 export default {
 	appType: 'custom',
 	build: {
+		cssMinify: 'lightningcss',
+		outDir: './dist/www/',
 		reportCompressedSize: false,
-		cssMinify: 'lightningcss'
+		rollupOptions: {
+			output: {
+				entryFileNames: 'assets/router-[hash].js',
+				chunkFileNames: 'assets/chunk-[hash].js',
+				assetFileNames: 'assets/asset-[hash][extname]'
+			}
+		}
 	},
 	css: {
-		/*
 		transformer: 'lightningcss',
 		lightningcss: {
 			targets: browserslistToTargets(browserslist('defaults'))
 		}
-		*/
 	},
 	plugins: [
 		solid(),
-		vike({
-			redirects: {
-				'/github': 'https://github.com/jspaste',
-				// TODO: Expose Backend API route locations
-				'/@documentName/r': '/api/document/@documentName/raw',
-				'/@documentName/raw': '/api/document/@documentName/raw'
-			},
-			prerender: {
-				partial: true
-			}
-		}),
+		tailwindcss(),
 		visualizer({
 			emitFile: true,
 			filename: 'bundle.html',
@@ -39,10 +37,8 @@ export default {
 	],
 	resolve: {
 		alias: {
-			'@x-component': resolve('./src/components'),
-			'@x-hook': resolve('./src/hooks'),
-			'@x-page': resolve('./src/pages'),
-			'@x-util': resolve('./src/utils')
+			'#component': resolve('./src/components'),
+			'#util': resolve('./src/utils')
 		}
 	}
 } satisfies UserConfig;

@@ -1,7 +1,11 @@
 import { brotliCompressSync, gzipSync } from 'node:zlib';
-import { findFiles, writeFile } from '@x-util/fs.ts';
+import { $ } from 'bun';
+import { findFiles, writeFile } from '#util/fs.ts';
 
-const rootClientDirectory = './dist/client/';
+// TODO: https://github.com/oven-sh/bun/pull/15167
+await $`rm -f ./dist/www/bundle.html`;
+
+const rootClientDirectory = './dist/www/';
 const relativeClientFiles = await findFiles(rootClientDirectory, undefined, /\.(js|mjs|cjs|json|css|html|wasm|svg)$/);
 const rootClientFiles = relativeClientFiles.map((file) => rootClientDirectory + file);
 

@@ -17,20 +17,14 @@ import {
 } from '@codemirror/view';
 import { debounce } from '@solid-primitives/scheduled';
 import { hyperLinkExtension, hyperLinkStyle } from '@uiw/codemirror-extensions-hyper-link';
-import type { Cursor } from '@x-component/screens/Editor';
-import { getLanguage, language, theme } from '@x-util/store';
-import { editorThemes } from '@x-util/themes';
-import { type Accessor, type Setter, createEffect, createSignal, on, onCleanup, onMount } from 'solid-js';
+import { createEffect, createSignal, on, onCleanup, onMount } from 'solid-js';
+import { getLanguage, language, theme } from '#util/store';
+import { editorThemes } from '#util/themes';
+import { useEditorContext } from '#util/useEditorContext.ts';
 
-type EditorProps = {
-	enableEdit: boolean;
-	isEditing: Accessor<boolean>;
-	setCursor: Setter<Cursor>;
-	setValue: Setter<string>;
-	value: Accessor<string>;
-};
+export default function Editor() {
+	const ctx = useEditorContext();
 
-export default function Editor(props: EditorProps) {
 	const [container, setContainer] = createSignal<HTMLDivElement>();
 	const [editorView, setEditorView] = createSignal<EditorView>();
 
@@ -45,7 +39,7 @@ export default function Editor(props: EditorProps) {
 			const { from } = view.state.selection.main;
 			const cursorPosition = view.state.doc.lineAt(from);
 
-			props.setCursor({
+			ctx.setCursor({
 				line: cursorPosition.number,
 				column: from - cursorPosition.from + 1
 			});
@@ -53,14 +47,14 @@ export default function Editor(props: EditorProps) {
 	}, 200);
 
 	const setValue = debounce((value: string) => {
-		props.setValue(value);
+		ctx.setValue(value);
 	}, 500);
 
 	onMount(async () => {
 		const currentView = new EditorView({
 			parent: container(),
 			state: EditorState.create({
-				doc: props.value(),
+				doc: ctx.value(),
 				extensions: [
 					placeholder(
 						"Start writing here! When you're done, hit the save button to generate a unique URL with your content."
@@ -83,7 +77,7 @@ export default function Editor(props: EditorProps) {
 					languageCompartment.of(await getLanguage()),
 					hyperLinkExtension(),
 					hyperLinkStyle,
-					readOnlyCompartment.of(EditorState.readOnly.of(props.enableEdit && !props.isEditing())),
+					readOnlyCompartment.of(EditorState.readOnly.of(ctx.enableEdit() && !ctx.isEditing())),
 					EditorView.theme({
 						'&': {
 							height: '100%'
@@ -113,9 +107,9 @@ export default function Editor(props: EditorProps) {
 	});
 
 	createEffect(
-		on([props.isEditing], (isEditing) => {
+		on([ctx.isEditing], (isEditing) => {
 			editorView()?.dispatch({
-				effects: readOnlyCompartment.reconfigure(EditorState.readOnly.of(props.enableEdit && !isEditing))
+				effects: readOnlyCompartment.reconfigure(EditorState.readOnly.of(ctx.enableEdit() && !isEditing))
 			});
 		})
 	);

@@ -1,9 +1,9 @@
 import type { LanguageSupport, StreamLanguage } from '@codemirror/language';
 import { makePersisted } from '@solid-primitives/storage';
-import { type LangKeys, langs } from '@x-util/langs';
-import type { ThemeKeys } from '@x-util/themes';
 import { createSignal } from 'solid-js';
 import { createStore } from 'solid-js/store';
+import { type LangKeys, langs } from '#util/langs';
+import type { ThemeKeys } from '#util/themes';
 
 export const [frontend, setFrontend] = makePersisted(
 	createStore({

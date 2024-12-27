@@ -1,51 +1,22 @@
-import Footer from '@x-component/Footer';
-import Header from '@x-component/Header';
-import GenericFallback from '@x-component/screens/GenericFallback';
-import { Suspense, createSignal, lazy } from 'solid-js';
+import { useParams } from '@solidjs/router';
+import { Suspense, lazy } from 'solid-js';
+import Footer from '#component/Footer';
+import Header from '#component/Header';
+import GenericFallback from '#component/screens/GenericFallback';
 
-const Editor = lazy(() => import('@x-component/Editor'));
+const Editor = lazy(() => import('#component/Editor'));
 
-type EditorScreenProps = {
-	documentName?: string;
-	enableEdit?: boolean;
-};
-
-export type Cursor = {
-	line: number;
-	column: number;
-};
-
-export const EditorScreen = (props: EditorScreenProps) => {
-	props.enableEdit = props.enableEdit ?? false;
-
-	const [cursor, setCursor] = createSignal<Cursor>({
-		line: 1,
-		column: 1
-	});
-
-	const [value, setValue] = createSignal('');
-
-	const [isEditing, setIsEditing] = createSignal(false);
+export default function EditorScreen() {
+	const params = useParams();
 
 	return (
 		<div class='flex flex-col h-dvh overflow-hidden'>
-			<Header cursor={cursor} />
+			<Header />
+			{/*·TODO:·Revise website load·*/}
 			<Suspense fallback={<GenericFallback />}>
-				<Editor
-					setCursor={setCursor}
-					setValue={setValue}
-					value={value}
-					isEditing={isEditing}
-					enableEdit={props.enableEdit}
-				/>
+				<Editor />
 			</Suspense>
-			<Footer
-				value={value}
-				documentName={props.documentName}
-				isEditing={isEditing}
-				setIsEditing={setIsEditing}
-				enableEdit={props.enableEdit}
-			/>
+			<Footer documentName={params.documentName} />
 		</div>
 	);
-};
+}

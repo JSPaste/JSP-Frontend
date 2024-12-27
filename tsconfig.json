@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
-		"lib": ["DOM", "DOM.Iterable", "ESNext"],
+		"lib": ["DOM", "DOM.Iterable", "ES2022"],
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
 		"target": "ES2022",
@@ -35,13 +35,12 @@
 
 		"baseUrl": ".",
 		"paths": {
-			"@x-component/*": ["./src/components/*"],
-			"@x-hook/*": ["./src/hooks/*"],
-			"@x-page/*": ["./src/pages/*"],
-			"@x-util/*": ["./src/utils/*"]
+			"#component/*": ["./src/components/*"],
+			"#util/*": ["./src/utils/*"]
 		},
 		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
-		"types": ["vite/client", "vike-solid/client"]
+		"types": ["vite/client"]
 	},
-	"exclude": ["./dist/**"]
+	"include": ["./"],
+	"exclude": ["./dist/", "./node_modules/"]
 }
