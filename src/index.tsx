@@ -1,8 +1,10 @@
 import { Route, Router } from '@solidjs/router';
+import { lazy } from 'solid-js';
 import { render } from 'solid-js/web';
-import Editor from '#component/screens/Editor.tsx';
 import Context from './EditorContext.tsx';
 import './index.css';
+
+const Editor = lazy(() => import('#component/screens/Editor'));
 
 render(
 	() => (

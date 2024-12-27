@@ -16,7 +16,7 @@ export default {
 			output: {
 				entryFileNames: 'assets/router-[hash].js',
 				chunkFileNames: 'assets/chunk-[hash].js',
-				assetFileNames: 'assets/asset-[hash][extname]'
+				assetFileNames: 'assets/chunk-[hash][extname]'
 			}
 		}
 	},
