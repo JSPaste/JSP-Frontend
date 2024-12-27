@@ -66,6 +66,7 @@ LICENSE           text
 NEWS              text
 readme            text
 *README*          text
+TODO              text
 
 # Templates
 *.dot             text
@@ -95,8 +96,7 @@ readme            text
 .gitattributes    text
 .gitconfig        text
 .htaccess         text
-*.lock            text -diff
-*.lockb           binary diff=lockb
+*.lock            text eol=lf -diff
 package.json      text eol=lf
 package-lock.json text eol=lf -diff
 pnpm-lock.yaml    text eol=lf -diff
@@ -184,8 +184,6 @@ Procfile          text
 # Executables
 *.exe             binary
 *.pyc             binary
-**/.yarn/releases/**   binary
-**/.yarn/plugins/**    binary
 
 # RC files (like .babelrc or .eslintrc)
 *.*rc             text

@@ -15,10 +15,13 @@ export const [frontend, setFrontend] = makePersisted(
 	}
 );
 
-export const [theme, setTheme] = makePersisted(createSignal<ThemeKeys>('default'), {
-	storage: localStorage,
-	name: 'x-jspaste-frontend-editor-theme'
-});
+export const [theme, setTheme] = makePersisted(
+	createSignal<ThemeKeys>(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+	{
+		storage: localStorage,
+		name: 'x-jspaste-frontend-editor-theme'
+	}
+);
 
 export const [language, setLanguage] = createSignal<LangKeys>('markdown');
 

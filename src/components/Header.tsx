@@ -10,15 +10,18 @@ type HeaderProps = {
 
 export default function Header(props: HeaderProps) {
 	return (
-		<div class='flex min-h-6 pl-2 pr-2 bg-base-200'>
+		<div class='flex min-h-6 pl-2 pr-2'>
 			<HeaderLabel
 				label={`Ln ${props.cursor().line.toString().padStart(2, '0')} Col ${props.cursor().column.toString().padStart(2, '0')}`}
 			/>
 			<HeaderLabel label={`Lang ${language()}`} />
-			<span class='flex-auto' />
+			<span class='grow' />
 			<div class='flex max-sm:hidden'>
-				{/* TODO: Expose Backend API route location */}
-				<HeaderLabel label='API' icon={<IconCrane size={12} />} onClick={() => window.open('/api/docs')} />
+				<HeaderLabel
+					label='API'
+					icon={<IconCrane size={12} />}
+					onClick={() => window.open('https://github.com/jspaste/backend/tree/stable?tab=readme-ov-file#api')}
+				/>
 				<HeaderLabel
 					label='Source'
 					icon={<IconCode size={12} />}

@@ -1,53 +1,12 @@
-import { readdir, rm } from 'node:fs/promises';
-import { dirname } from 'node:path';
-import { join } from 'node:path/posix';
-import esbuild from 'esbuild';
-
-const root = process.cwd();
-const serverOutDir = './dist/server/';
-const serverOutDirAbs = join(root, serverOutDir);
-const serverEntrypoint = ['./src/server/index.ts'];
+import { $ } from 'bun';
 
 const buildStandalone = async () => {
-	const result = await esbuild.build({
-		platform: 'node',
-		target: 'esnext',
-		format: 'esm',
-		bundle: true,
-		minify: true,
-		treeShaking: true,
-		external: ['bun'],
-		entryPoints: serverEntrypoint,
-		sourcemap: false,
-		outdir: serverOutDirAbs,
-		splitting: false,
-		allowOverwrite: true,
-		metafile: true,
-		logOverride: { 'ignored-bare-import': 'silent' }
-	});
+	await $`bun build ./src/server.ts --outfile=./dist/server/frontend --compile --minify --sourcemap=inline`;
 
-	const bundledFilesFromOutDir = Object.keys(result.metafile.inputs).filter(
-		(relativeFile) => relativeFile.endsWith(relativeFile) && relativeFile.startsWith('dist/')
-	);
-
-	await Promise.all(
-		bundledFilesFromOutDir.map(async (relativeFile) => {
-			await rm(join(root, relativeFile));
-		})
-	);
-
-	const relativeDirs = new Set(bundledFilesFromOutDir.map((file) => dirname(file)));
-	for (const relativeDir of relativeDirs) {
-		const absDir = join(root, relativeDir);
-		const files = await readdir(absDir);
-		if (!files.length) {
-			await rm(absDir, { recursive: true });
-			if (relativeDir.startsWith(serverOutDir)) {
-				relativeDirs.add(dirname(relativeDir));
-			}
-		}
-	}
+	// TODO: https://github.com/oven-sh/bun/pull/15167
+	await $`rm -rf ./dist/server/assets/ ./dist/server/chunks/ ./dist/server/entries/ ./dist/server/*.*`;
+	await $`rm -f ./dist/client/bundle.html`;
 };
 
-console.info('[STANDALONE] Running...');
+console.info('[BUILD] Building standalone...');
 await buildStandalone();

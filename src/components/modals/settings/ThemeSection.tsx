@@ -36,7 +36,7 @@ export default function ThemeSection() {
 				<button
 					type='button'
 					aria-label='Previous'
-					class='btn btn-square btn-sm bg-base-200'
+					class='btn btn-square btn-sm'
 					onClick={() => changeIndex(-1)}
 					disabled={currentIndex() === 0}
 				>
@@ -46,10 +46,10 @@ export default function ThemeSection() {
 					<For each={Object.entries(Themes).slice(currentIndex(), currentIndex() + maxColumns())}>
 						{([id, name]) => (
 							<input
-								checked={theme() === id}
+								checked={id === theme()}
 								type='radio'
 								name='theme-button'
-								class='btn theme-controller join-horizontal bg-base-200'
+								class='btn theme-controller join-horizontal'
 								aria-label={name}
 								value={id}
 								onChange={() => setTheme(id as ThemeKeys)}
@@ -60,7 +60,7 @@ export default function ThemeSection() {
 				<button
 					type='button'
 					aria-label='Next'
-					class='btn btn-square btn-sm bg-base-200'
+					class='btn btn-square btn-sm'
 					onClick={() => changeIndex(1)}
 					disabled={currentIndex() === Object.keys(Themes).length - maxColumns()}
 				>

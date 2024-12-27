@@ -1,7 +1,7 @@
 import { IconAlignJustified, IconDeviceFloppy, IconPencil, IconSettings } from '@tabler/icons-solidjs';
 import FooterButton from '@x-component/FooterButton';
 import Settings from '@x-component/modals/settings/Settings';
-import { type Accessor, type Setter, createSignal } from 'solid-js';
+import type { Accessor, Setter } from 'solid-js';
 
 type FooterProps = {
 	documentName?: string;
@@ -12,25 +12,17 @@ type FooterProps = {
 };
 
 export default function Footer(props: FooterProps) {
-	const [isSaveLoading, setIsSaveLoading] = createSignal(false);
-
 	const handleSave = async () => {
-		setIsSaveLoading(true);
-		const result = null;
-		setIsSaveLoading(false);
-
-		location.href = '/abc123';
-		console.info(result);
+		alert('Saved! (NOT IMPLEMENTED)');
 	};
 
 	return (
-		<div class='flex gap-3 pt-2 pb-2 pl-2.5 pr-2.5 bg-base-200'>
-			<div class='flex-auto' />
+		<div class='flex gap-2 p-2'>
+			<span class='grow' />
 			<FooterButton
 				icon={<IconDeviceFloppy size={20} />}
 				label={props.value() ? 'Save' : 'You need to write something to save!'}
 				onClick={handleSave}
-				isLoading={isSaveLoading()}
 				isDisabled={!props.value()}
 			/>
 			<FooterButton

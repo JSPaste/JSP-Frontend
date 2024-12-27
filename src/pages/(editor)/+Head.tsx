@@ -1,21 +1,10 @@
 import { siteManifest } from '@x-page/manifest';
-import { onMount } from 'solid-js';
-import './root.css';
+import './editor.css';
 
 export default function () {
-	onMount(() => {
-		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker.getRegistrations().then((registrations) => {
-				for (const registration of registrations) {
-					registration.unregister();
-				}
-			});
-		}
-	});
-
 	return (
 		<>
-			<meta name='theme-color' content='#FFE285' />
+			<meta name='theme-color' content='#fddf82' />
 
 			<meta property='og:type' content={siteManifest.type} />
 			<meta property='og:url' content={siteManifest.baseURL} />

@@ -1,48 +1,41 @@
-import chalk from 'chalk';
-import log from 'loglevel';
+import { colors } from '@x-util/colors.ts';
+
+export enum LogLevels {
+	none = 0,
+	error = 1,
+	warn = 2,
+	info = 3,
+	debug = 4
+}
+
+let logLevel: LogLevels = LogLevels.info;
 
 export const logger = {
-	set: (level: number | undefined) => {
-		switch (level) {
-			case 0: {
-				log.setLevel('error');
-				break;
-			}
-			case 1: {
-				log.setLevel('warn');
-				break;
-			}
-			case 2: {
-				log.setLevel('info');
-				break;
-			}
-			case 3: {
-				log.setLevel('debug');
-				break;
-			}
-			default: {
-				log.setLevel('info');
-			}
+	set: (level: LogLevels): void => {
+		logLevel = level;
+	},
+
+	error: (...text: unknown[]): void => {
+		if (logLevel >= LogLevels.error) {
+			console.error(colors.gray('[FRONTEND]'), colors.red('[ERROR]'), text.join(' '));
 		}
 	},
 
-	// biome-ignore lint/suspicious/noExplicitAny: We don't know the type
-	error: (...msg: any[]) => {
-		log.error(chalk.red('[ERROR]'), chalk.yellow('[SERVER]'), ...msg);
+	warn: (...text: unknown[]): void => {
+		if (logLevel >= LogLevels.warn) {
+			console.warn(colors.gray('[FRONTEND]'), colors.yellow('[WARN]'), text.join(' '));
+		}
 	},
 
-	// biome-ignore lint/suspicious/noExplicitAny: We don't know the type
-	warn: (...msg: any[]) => {
-		log.warn(chalk.yellow('[WARN]'), chalk.yellow('[SERVER]'), ...msg);
+	info: (...text: unknown[]): void => {
+		if (logLevel >= LogLevels.info) {
+			console.info(colors.gray('[FRONTEND]'), colors.blue('[INFO]'), text.join(' '));
+		}
 	},
 
-	// biome-ignore lint/suspicious/noExplicitAny: We don't know the type
-	info: (...msg: any[]) => {
-		log.info(chalk.blue('[INFO]'), chalk.yellow('[SERVER]'), ...msg);
-	},
-
-	// biome-ignore lint/suspicious/noExplicitAny: We don't know the type
-	debug: (...msg: any[]) => {
-		log.debug(chalk.gray('[DEBUG]'), chalk.yellow('[SERVER]'), ...msg);
+	debug: (...text: unknown[]): void => {
+		if (logLevel >= LogLevels.debug) {
+			console.debug(colors.gray('[FRONTEND]'), colors.gray('[DEBUG]'), text.join(' '));
+		}
 	}
 } as const;

@@ -18,8 +18,8 @@ import {
 import { debounce } from '@solid-primitives/scheduled';
 import { hyperLinkExtension, hyperLinkStyle } from '@uiw/codemirror-extensions-hyper-link';
 import type { Cursor } from '@x-component/screens/Editor';
-import { editorThemes } from '@x-util/editorThemes';
 import { getLanguage, language, theme } from '@x-util/store';
+import { editorThemes } from '@x-util/themes';
 import { type Accessor, type Setter, createEffect, createSignal, on, onCleanup, onMount } from 'solid-js';
 
 type EditorProps = {
@@ -149,5 +149,5 @@ export default function Editor(props: EditorProps) {
 		setEditorView(undefined);
 	});
 
-	return <div ref={setContainer} class='flex-grow overflow-hidden' />;
+	return <div ref={setContainer} class='grow overflow-hidden' />;
 }
