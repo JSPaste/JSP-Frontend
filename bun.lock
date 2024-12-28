@@ -28,7 +28,7 @@
         "@tailwindcss/postcss": "4.0.0-beta.8",
         "@uiw/codemirror-extensions-hyper-link": "~4.23.7",
         "@uiw/codemirror-themes": "~4.23.7",
-        "daisyui": "5.0.0-alpha.56",
+        "daisyui": "5.0.0-alpha.58",
         "env-var": "~7.5.0",
         "hono": "~4.6.14",
         "solid-js": "~1.9.3",
@@ -402,7 +402,7 @@
 
     "csstype": ["csstype@3.1.3", "", {}, "sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw=="],
 
-    "daisyui": ["daisyui@5.0.0-alpha.56", "", {}, "sha512-HZOHoIN48FwjvZH+b/dNnjzLe9llxcTjTHJYjXH7DA4sTnh73TmSebw4IkUM0cvJeWv8eZ6KwWoAGO7TiuW53g=="],
+    "daisyui": ["daisyui@5.0.0-alpha.58", "", {}, "sha512-Ort973WlOMlSDgltV0RjZ28guzkCC7Muwzqh5mgYx5ITWqj0cT1OJjYnLRSAweCiWTMi/RCRHpH+HXXe0ZMg5A=="],
 
     "debug": ["debug@4.4.0", "", { "dependencies": { "ms": "^2.1.3" } }, "sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA=="],
 

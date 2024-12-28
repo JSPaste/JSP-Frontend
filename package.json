@@ -66,7 +66,7 @@
 		"@tailwindcss/postcss": "4.0.0-beta.8",
 		"@uiw/codemirror-extensions-hyper-link": "~4.23.7",
 		"@uiw/codemirror-themes": "~4.23.7",
-		"daisyui": "5.0.0-alpha.56",
+		"daisyui": "5.0.0-alpha.58",
 		"env-var": "~7.5.0",
 		"hono": "~4.6.14",
 		"solid-js": "~1.9.3",
