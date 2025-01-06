@@ -1,5 +1,4 @@
 import { resolve } from 'node:path';
-import * as process from 'node:process';
 import tailwindcss from '@tailwindcss/vite';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
