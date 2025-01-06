@@ -24,7 +24,7 @@
         "@solid-primitives/media": "~2.2.9",
         "@solid-primitives/scheduled": "~1.4.4",
         "@solid-primitives/storage": "~4.2.1",
-        "@tabler/icons-solidjs": "~3.26.0",
+        "@tabler/icons-solidjs": "~3.27.0",
         "@tailwindcss/postcss": "4.0.0-beta.8",
         "@uiw/codemirror-extensions-hyper-link": "~4.23.7",
         "@uiw/codemirror-themes": "~4.23.7",
@@ -314,9 +314,9 @@
 
     "@solid-primitives/utils": ["@solid-primitives/utils@6.2.3", "", { "peerDependencies": { "solid-js": "^1.6.12" } }, "sha512-CqAwKb2T5Vi72+rhebSsqNZ9o67buYRdEJrIFzRXz3U59QqezuuxPsyzTSVCacwS5Pf109VRsgCJQoxKRoECZQ=="],
 
-    "@tabler/icons": ["@tabler/icons@3.26.0", "", {}, "sha512-oO3D4ss+DxzxqU1aDy0f1HmToyrO0gcQWIMpzHAfV1quPUx0BZYvNm5xz1DQb4DxNm/+xNvbBGLJy4pzTLYWag=="],
+    "@tabler/icons": ["@tabler/icons@3.27.1", "", {}, "sha512-Utt80OeExBV/Pi9m9Z7ZRHOHQPapMO8t4mCSMb/n5oiLWCEU2HX+9mGzo772SVxyDZ3YQBgmzIYnGKhL3tUSSQ=="],
 
-    "@tabler/icons-solidjs": ["@tabler/icons-solidjs@3.26.0", "", { "dependencies": { "@tabler/icons": "3.26.0" }, "peerDependencies": { "solid-js": "^1.4.7" } }, "sha512-i0y3xK/geNlrf8YHg7pG6FLfYihC6SMegzc/wMosOHkoN/b0urqdf/ZDKqqTBgR0YOD2FVG0wq9VOfKANkSkhw=="],
+    "@tabler/icons-solidjs": ["@tabler/icons-solidjs@3.27.1", "", { "dependencies": { "@tabler/icons": "3.27.1" }, "peerDependencies": { "solid-js": "^1.4.7" } }, "sha512-zH15xUhLQu+mSdsq7mgF0WyIUHmtyvWidBYm0f6LGHiD1U0hRfzfDJJmfO841O+4jU/VsdtX1ox1T1ArZ7A5sw=="],
 
     "@tailwindcss/node": ["@tailwindcss/node@4.0.0-beta.8", "", { "dependencies": { "enhanced-resolve": "^5.17.1", "jiti": "^2.4.0", "tailwindcss": "4.0.0-beta.8" } }, "sha512-ZbicJgFxo83IIH5eBm7CU3K1olsfud7/zg3+yG7P6+fZiufhh8FllM5QOJVxUEJ5zeB1V94Y+hTq5UOfu8ZloA=="],
 
