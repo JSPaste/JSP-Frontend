@@ -1,10 +1,10 @@
 import { IconCode, IconCrane } from '@tabler/icons-solidjs';
 import HeaderLabel from '#component/HeaderLabel';
-import { language } from '#util/store';
-import { useEditorContext } from '#util/useEditorContext.ts';
+import { getEditorContext } from '#util/getEditorContext.ts';
+import { language } from '#util/langs.ts';
 
 export default function Header() {
-	const ctx = useEditorContext();
+	const ctx = getEditorContext();
 
 	return (
 		<div class='flex min-h-6 pl-2 pr-2'>

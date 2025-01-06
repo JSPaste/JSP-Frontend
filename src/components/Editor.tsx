@@ -1,7 +1,7 @@
 import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { bracketMatching, defaultHighlightStyle, indentOnInput, syntaxHighlighting } from '@codemirror/language';
-import { Compartment, EditorState } from '@codemirror/state';
+import { EditorState } from '@codemirror/state';
 import {
 	EditorView,
 	crosshairCursor,
@@ -17,22 +17,21 @@ import {
 } from '@codemirror/view';
 import { debounce } from '@solid-primitives/scheduled';
 import { hyperLinkExtension, hyperLinkStyle } from '@uiw/codemirror-extensions-hyper-link';
-import { createEffect, createSignal, on, onCleanup, onMount } from 'solid-js';
-import { getLanguage, language, theme } from '#util/store';
+import { createSignal, onCleanup, onMount } from 'solid-js';
+import { extensionLoader } from '#util/extensionLoader.ts';
+import { getEditorContext } from '#util/getEditorContext.ts';
+import { langs, language } from '#util/langs.ts';
+import { lazyExtensionLoader } from '#util/lazyExtensionLoader.ts';
+import { editorContent, setEditorContent, theme } from '#util/persistence.ts';
 import { editorThemes } from '#util/themes';
-import { useEditorContext } from '#util/useEditorContext.ts';
 
 export default function Editor() {
-	const ctx = useEditorContext();
+	const ctx = getEditorContext();
 
 	const [container, setContainer] = createSignal<HTMLDivElement>();
 	const [editorView, setEditorView] = createSignal<EditorView>();
 
-	const readOnlyCompartment = new Compartment();
-	const themeCompartment = new Compartment();
-	const languageCompartment = new Compartment();
-
-	const updateCursorInformation = debounce(() => {
+	const updateCursor = debounce(() => {
 		const view = editorView();
 
 		if (view) {
@@ -46,15 +45,23 @@ export default function Editor() {
 		}
 	}, 200);
 
-	const setValue = debounce((value: string) => {
-		ctx.setValue(value);
+	const saveEditorContent = debounce(() => {
+		const view = editorView();
+
+		if (view) {
+			setEditorContent(view.state.doc.toString());
+		}
 	}, 500);
 
-	onMount(async () => {
+	extensionLoader(() => editorThemes[theme()], editorView);
+	extensionLoader(() => EditorState.readOnly.of(ctx.editable() && !ctx.writing()), editorView);
+	lazyExtensionLoader(() => langs[language()](), editorView);
+
+	onMount(() => {
 		const currentView = new EditorView({
 			parent: container(),
 			state: EditorState.create({
-				doc: ctx.value(),
+				doc: editorContent(),
 				extensions: [
 					placeholder(
 						"Start writing here! When you're done, hit the save button to generate a unique URL with your content."
@@ -73,11 +80,8 @@ export default function Editor() {
 					crosshairCursor(),
 					highlightActiveLine(),
 					keymap.of([...closeBracketsKeymap, ...defaultKeymap, ...historyKeymap]),
-					themeCompartment.of(editorThemes[theme()]),
-					languageCompartment.of(await getLanguage()),
 					hyperLinkExtension(),
 					hyperLinkStyle,
-					readOnlyCompartment.of(EditorState.readOnly.of(ctx.enableEdit() && !ctx.isEditing())),
 					EditorView.theme({
 						'&': {
 							height: '100%'
@@ -91,12 +95,12 @@ export default function Editor() {
 					}),
 					EditorView.contentAttributes.of({ 'data-lt-active': 'false' }),
 					EditorView.updateListener.of((vu) => {
-						if (vu.geometryChanged) {
-							updateCursorInformation();
+						if (vu.selectionSet) {
+							updateCursor();
 						}
 
 						if (vu.docChanged) {
-							setValue(vu.state.doc.toString());
+							saveEditorContent();
 						}
 					})
 				]
@@ -105,38 +109,6 @@ export default function Editor() {
 
 		setEditorView(currentView);
 	});
-
-	createEffect(
-		on([ctx.isEditing], (isEditing) => {
-			editorView()?.dispatch({
-				effects: readOnlyCompartment.reconfigure(EditorState.readOnly.of(ctx.enableEdit() && !isEditing))
-			});
-		})
-	);
-
-	createEffect(
-		on(
-			theme,
-			(theme) => {
-				editorView()?.dispatch({
-					effects: themeCompartment.reconfigure(editorThemes[theme])
-				});
-			},
-			{ defer: true }
-		)
-	);
-
-	createEffect(
-		on(
-			language,
-			async () => {
-				editorView()?.dispatch({
-					effects: languageCompartment.reconfigure(await getLanguage())
-				});
-			},
-			{ defer: true }
-		)
-	);
 
 	onCleanup(() => {
 		editorView()?.destroy();

@@ -1,18 +1,18 @@
 import { Route, Router } from '@solidjs/router';
 import { lazy } from 'solid-js';
 import { render } from 'solid-js/web';
-import Context from './EditorContext.tsx';
+import Context from '#component/Context.tsx';
+import UnknownScreen from '#screen/Unknown.tsx';
 import './index.css';
 
-const Editor = lazy(() => import('#component/screens/Editor'));
+const EditorScreen = lazy(() => import('#screen/Editor'));
 
 render(
 	() => (
-		// TODO: Add missing routes
 		<Router root={Context}>
-			<Route path='/' component={Editor} />
-			{/*·FIXME:·Test·param·*/}
-			<Route path='/:documentName' component={Editor} />
+			<Route path='/' component={EditorScreen} />
+			<Route path='/:documentName' component={EditorScreen} />
+			<Route path='*404' component={UnknownScreen} />
 		</Router>
 	),
 	document.body

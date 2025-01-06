@@ -5,9 +5,8 @@
 	"license": "EUPL-1.2",
 	"type": "module",
 	"scripts": {
-		"analyse:bundle": "bun run analyze:bundle",
-		"analyze:bundle": "rm -rf ./dist/ && bun vite build && mv ./dist/www/bundle.html ./dist/client.bundle.html",
 		"build": "bun run build:server",
+		"build:debug": "rm -rf ./dist/ && NODE_ENV=development bun vite build",
 		"build:server": "rm -rf ./dist/ && bun vite build && bun run script:server && bun run script:compress",
 		"clean:git:all": "bun run clean:git:untracked && bun run clean:git:gc && bun run clean:git:hooks",
 		"clean:git:all:force": "bun run clean:git:untracked:force && bun run clean:git:gc && bun run clean:git:hooks",
@@ -57,7 +56,6 @@
 		"@uiw/codemirror-themes": "~4.23.7",
 		"daisyui": "5.0.0-beta.1",
 		"env-var": "~7.5.0",
-		"hono": "~4.6.14",
 		"solid-js": "~1.9.3",
 		"tailwindcss": "4.0.0-beta.9"
 	},
@@ -70,7 +68,7 @@
 		"lightningcss": "~1.29.0",
 		"rollup-plugin-visualizer": "~5.14.0",
 		"sort-package-json": "~2.12.0",
-		"vite": "~6.0.6",
+		"vite": "~6.0.7",
 		"vite-plugin-solid": "~2.11.0"
 	},
 	"peerDependencies": {
