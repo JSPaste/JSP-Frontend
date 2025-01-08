@@ -4,7 +4,7 @@
     "": {
       "dependencies": {
         "@codemirror/autocomplete": "~6.18.4",
-        "@codemirror/commands": "~6.7.1",
+        "@codemirror/commands": "~6.8.0",
         "@codemirror/lang-cpp": "~6.0.2",
         "@codemirror/lang-css": "~6.3.1",
         "@codemirror/lang-go": "~6.0.1",
@@ -126,7 +126,7 @@
 
     "@codemirror/autocomplete": ["@codemirror/autocomplete@6.18.4", "", { "dependencies": { "@codemirror/language": "^6.0.0", "@codemirror/state": "^6.0.0", "@codemirror/view": "^6.17.0", "@lezer/common": "^1.0.0" } }, "sha512-sFAphGQIqyQZfP2ZBsSHV7xQvo9Py0rV0dW7W3IMRdS+zDuNb2l3no78CvUaWKGfzFjI4FTrLdUSj86IGb2hRA=="],
 
-    "@codemirror/commands": ["@codemirror/commands@6.7.1", "", { "dependencies": { "@codemirror/language": "^6.0.0", "@codemirror/state": "^6.4.0", "@codemirror/view": "^6.27.0", "@lezer/common": "^1.1.0" } }, "sha512-llTrboQYw5H4THfhN4U3qCnSZ1SOJ60ohhz+SzU0ADGtwlc533DtklQP0vSFaQuCPDn3BPpOd1GbbnUtwNjsrw=="],
+    "@codemirror/commands": ["@codemirror/commands@6.8.0", "", { "dependencies": { "@codemirror/language": "^6.0.0", "@codemirror/state": "^6.4.0", "@codemirror/view": "^6.27.0", "@lezer/common": "^1.1.0" } }, "sha512-q8VPEFaEP4ikSlt6ZxjB3zW72+7osfAYW9i8Zu943uqbKuz6utc1+F170hyLUCUltXORjQXRyYQNfkckzA/bPQ=="],
 
     "@codemirror/lang-cpp": ["@codemirror/lang-cpp@6.0.2", "", { "dependencies": { "@codemirror/language": "^6.0.0", "@lezer/cpp": "^1.0.0" } }, "sha512-6oYEYUKHvrnacXxWxYa6t4puTlbN3dgV662BDfSH8+MfjQjVmP697/KYTDOqpxgerkvoNm7q5wlFMBeX8ZMocg=="],
 
