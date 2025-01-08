@@ -62,7 +62,7 @@
 		"@solid-primitives/media": "~2.2.9",
 		"@solid-primitives/scheduled": "~1.4.4",
 		"@solid-primitives/storage": "~4.2.1",
-		"@tabler/icons-solidjs": "~3.27.0",
+		"@tabler/icons-solidjs": "~3.28.0",
 		"@tailwindcss/postcss": "4.0.0-beta.8",
 		"@uiw/codemirror-extensions-hyper-link": "~4.23.7",
 		"@uiw/codemirror-themes": "~4.23.7",
