@@ -63,7 +63,7 @@
 		"@solid-primitives/scheduled": "~1.4.4",
 		"@solid-primitives/storage": "~4.2.1",
 		"@tabler/icons-solidjs": "~3.28.0",
-		"@tailwindcss/postcss": "4.0.0-beta.8",
+		"@tailwindcss/postcss": "4.0.0-beta.9",
 		"@uiw/codemirror-extensions-hyper-link": "~4.23.7",
 		"@uiw/codemirror-themes": "~4.23.7",
 		"daisyui": "5.0.0-beta.1",
