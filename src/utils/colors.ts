@@ -1,9 +1,9 @@
-import { type ColorInput, color as bunColor } from 'bun';
+import type { ColorInput } from 'bun';
 
 const colorString =
 	(color: ColorInput) =>
 	(...text: unknown[]): string => {
-		return bunColor(color, 'ansi') + text.join(' ') + colors.reset;
+		return Bun.color(color, 'ansi') + text.join(' ') + colors.reset;
 	};
 
 export const colors = {

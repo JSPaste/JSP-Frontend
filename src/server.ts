@@ -1,9 +1,6 @@
-import { LogLevels, logger } from '@x-util/logger.ts';
-import { serve } from 'bun';
 import { get as envvar } from 'env-var';
-import { serveStatic } from 'hono/bun';
-import { Hono } from 'hono/tiny';
-import { renderPage } from 'vike/server';
+import { encodingCompatibleExtension } from '#util/encoding.ts';
+import { LogLevels, logger } from '#util/logger.ts';
 
 process.on('SIGTERM', async () => await frontend.stop());
 
@@ -14,48 +11,55 @@ export const env = {
 
 logger.set(env.logLevel);
 
-const server = new Hono();
+const encodingsExtensions = ['br', 'gz'];
 
-server.use(
-	'*',
-	serveStatic({
-		root: './client/',
-		precompressed: true,
-		onFound: (file, ctx) => {
-			logger.debug('(STATIC)', ctx.req.method, ctx.req.path);
+const frontend = Bun.serve({
+	async fetch(req) {
+		const reqURL = new URL(req.url);
 
-			if (ctx.req.path.startsWith('/assets/')) {
-				ctx.header('Cache-Control', 'max-age=31536000, public, immutable');
-			} else {
-				ctx.header('Cache-Control', 'max-age=3600, public, no-transform');
-			}
+		let routeFile = `./www${reqURL.pathname}`;
+		let contentFile = Bun.file(routeFile);
 
-			if (file.endsWith('.html')) {
-				ctx.header('Cache-Control', 'max-age=0, no-store');
+		// Select SPA for inexistent files
+		if (!(await contentFile.exists())) {
+			routeFile = './www/index.html';
+			contentFile = Bun.file(routeFile);
+		}
+
+		const headers: HeadersInit = {};
+
+		// Check if file extension is compatible encoded
+		if (encodingCompatibleExtension.test(routeFile)) {
+			const encodingsHeader = req.headers
+				.get('Accept-Encoding')
+				?.split(',')
+				.map((encoding) => encoding.trim());
+
+			const encodingCandidate = encodingsExtensions.find((encoding) => encodingsHeader?.includes(encoding));
+
+			if (encodingCandidate) {
+				headers['Content-Encoding'] = encodingCandidate;
+				headers['Content-Type'] = contentFile.type;
+				headers.Vary = 'Accept-Encoding';
+				contentFile = Bun.file(`${routeFile}.${encodingCandidate}`);
 			}
 		}
-	})
-);
 
-server.all('*', async (ctx) => {
-	logger.debug('(DYNAMIC)', ctx.req.method, ctx.req.path);
+		if (reqURL.pathname.startsWith('/assets/')) {
+			headers['Cache-Control'] = 'max-age=31536000, public, immutable';
+		} else if (routeFile.endsWith('.html')) {
+			headers['Cache-Control'] = 'max-age=0, no-store';
+		} else {
+			headers['Cache-Control'] = 'max-age=3600, public, no-transform';
+		}
 
-	const pageContext = await renderPage({ urlOriginal: ctx.req.url });
-	const response = pageContext.httpResponse;
+		logger.debug(req.method, reqURL.pathname);
 
-	const { readable, writable } = new TransformStream();
-
-	response.pipe(writable);
-
-	return new Response(readable, {
-		status: response.statusCode,
-		headers: response.headers
-	});
-});
-
-// TODO: https://github.com/oven-sh/bun/issues/8690
-const frontend = serve({
-	fetch: server.fetch,
+		return new Response(contentFile, { headers });
+	},
+	static: {
+		'/github': Response.redirect('https://github.com/jspaste', 301)
+	},
 	port: env.port
 });
 

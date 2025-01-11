@@ -106,5 +106,6 @@
 }
 
 :root {
+	color-scheme: light dark;
 	user-select: none;
 }

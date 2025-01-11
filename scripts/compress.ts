@@ -1,8 +1,9 @@
 import { brotliCompressSync, gzipSync } from 'node:zlib';
-import { findFiles, writeFile } from '@x-util/fs.ts';
+import { encodingCompatibleExtension } from '#util/encoding.ts';
+import { findFiles, writeFile } from '#util/fs.ts';
 
-const rootClientDirectory = './dist/client/';
-const relativeClientFiles = await findFiles(rootClientDirectory, undefined, /\.(js|mjs|cjs|json|css|html|wasm|svg)$/);
+const rootClientDirectory = './dist/www/';
+const relativeClientFiles = await findFiles(rootClientDirectory, undefined, encodingCompatibleExtension);
 const rootClientFiles = relativeClientFiles.map((file) => rootClientDirectory + file);
 
 await Promise.all(
