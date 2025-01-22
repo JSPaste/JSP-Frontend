@@ -23,7 +23,7 @@ import { getEditorContext } from '#util/getEditorContext.ts';
 import { langs, language } from '#util/langs.ts';
 import { lazyExtensionLoader } from '#util/lazyExtensionLoader.ts';
 import { editorContent, setEditorContent, theme } from '#util/persistence.ts';
-import { editorThemes } from '#util/themes';
+import { editorThemes } from '#util/themes.ts';
 
 export default function Editor() {
 	const ctx = getEditorContext();

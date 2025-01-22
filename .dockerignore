@@ -1,4 +1,15 @@
 *
-!dist/
-!bunfig.toml
-!LICENSE
+
+# Project files
+!/go.mod
+!/go.sum
+!/LICENSE
+!/server.go
+!/taskfile.yml
+
+# WWW
+!/www/**
+#/www/dist/
+#/www/node_modules/
+## FIXME: why
+#/www/bundle.html

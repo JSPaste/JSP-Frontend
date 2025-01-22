@@ -5,7 +5,7 @@ import Context from '#component/Context.tsx';
 import UnknownScreen from '#screen/Unknown.tsx';
 import './index.css';
 
-const EditorScreen = lazy(() => import('#screen/Editor'));
+const EditorScreen = lazy(() => import('#screen/Editor.tsx'));
 
 render(
 	() => (

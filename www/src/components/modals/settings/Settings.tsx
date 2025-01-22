@@ -1,6 +1,6 @@
 import { Portal } from 'solid-js/web';
-import LanguageSection from '#component/modals/settings/LanguageSection';
-import ThemeSection from '#component/modals/settings/ThemeSection';
+import LanguageSection from '#component/modals/settings/LanguageSection.tsx';
+import ThemeSection from '#component/modals/settings/ThemeSection.tsx';
 
 export default function Settings() {
 	return (

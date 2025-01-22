@@ -14,7 +14,7 @@ export default {
 	build: {
 		target: 'es2022',
 		cssMinify: 'lightningcss',
-		outDir: './dist/www/',
+		outDir: './dist/',
 		reportCompressedSize: false,
 		rollupOptions: {
 			output: {
