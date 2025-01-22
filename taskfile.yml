@@ -1,0 +1,79 @@
+version: '3'
+
+tasks:
+  default:
+    - task: install
+    - task: build
+
+  build:
+    - task: build-www
+    - task: build-server
+
+  build-server:
+    cmds:
+      - go build -o ./dist/server ./server.go
+
+  build-www:
+    cmds:
+      - bun --cwd=./www/ run build
+
+  clean:
+    - task: clean-server
+    - task: clean-www
+
+  clean-server:
+    cmds:
+      - bun exec "rm -rf ./dist/"
+      - go clean
+
+  clean-www:
+    cmds:
+      - bun --cwd=./www/ exec "rm -rf ./dist/"
+      - bun --cwd=./www/ exec "rm -rf ./node_modules/"
+
+  clean-git:
+    cmds:
+      - task: clean-git-untracked
+      - task: clean-git-gc
+      - task: clean-git-hooks
+
+  clean-git-gc:
+    cmds:
+      - git gc --aggressive --prune
+
+  clean-git-hooks:
+    cmds:
+      - bun exec "rm -rf ./.git/hooks/"
+
+  clean-git-untracked:
+    cmds:
+      - git clean -d -x -i
+
+  install:
+    - task: install-www
+    - task: install-server
+
+  install-server:
+    cmds:
+      - go mod download
+
+  install-www:
+    cmds:
+      - bun --cwd=./www/ install
+
+  install-www-ci:
+    cmds:
+      - bun --cwd=./www/ install --frozen-lockfile
+
+  tidy:
+    - task: tidy-www
+    - task: tidy-server
+
+  tidy-server:
+    cmds:
+      - go mod tidy
+
+  tidy-www:
+    cmds:
+      - bun --cwd=./www/ exec "rm -f bun.lock"
+      - bun --cwd=./www/ install -f

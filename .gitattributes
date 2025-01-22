@@ -7,6 +7,7 @@
 *.cmd             text eol=crlf
 *.coffee          text
 *.css             text diff=css
+*.go              text diff=golang
 *.htm             text diff=html
 *.html            text diff=html
 *.inc             text

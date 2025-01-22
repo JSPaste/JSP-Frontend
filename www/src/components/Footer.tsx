@@ -1,7 +1,7 @@
 import { useParams } from '@solidjs/router';
 import { IconAlignJustified, IconDeviceFloppy, IconPencil, IconSettings } from '@tabler/icons-solidjs';
-import FooterButton from '#component/FooterButton';
-import Settings from '#component/modals/settings/Settings';
+import FooterButton from '#component/FooterButton.tsx';
+import Settings from '#component/modals/settings/Settings.tsx';
 import { getEditorContext } from '#util/getEditorContext.ts';
 import { editorContent } from '#util/persistence.ts';
 

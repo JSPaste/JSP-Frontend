@@ -1,6 +1,6 @@
 import { makePersisted } from '@solid-primitives/storage';
 import { createSignal } from 'solid-js';
-import type { ThemeKeys } from '#util/themes';
+import type { ThemeKeys } from '#util/themes.ts';
 
 export const [editorAPI, setEditorAPI] = makePersisted(createSignal('https://jspaste.eu/api/v2/documents'), {
 	storage: localStorage,
