@@ -25,7 +25,8 @@ func main() {
 	portEnv := getEnv("PORT", uint16(3000)).(uint16)
 
 	server := fiber.New(fiber.Config{
-		StrictRouting: true,
+		StrictRouting: false,
+		GETOnly:       true,
 		ColorScheme: fiber.Colors{
 			Black:   "\x1b[90m",
 			Red:     "\x1b[38;2;239;84;84m",
@@ -37,17 +38,25 @@ func main() {
 			White:   "\x1b[97m",
 			Reset:   "\x1b[0m",
 		},
-		RequestMethods: []string{fiber.MethodGet},
 	})
 
-	server.Get("/*", static.New("", static.Config{
+	server.Use(static.New("", static.Config{
 		FS: www.Bundle(),
-		NotFoundHandler: func(ctx fiber.Ctx) error {
-			return ctx.SendFile("index.html", fiber.SendFile{
-				FS: www.Bundle(),
-			})
-		},
 	}))
+
+	server.Get("/:documentName", func(ctx fiber.Ctx) error {
+		return ctx.SendFile("index.html", fiber.SendFile{
+			FS: www.Bundle(),
+		})
+	})
+
+	server.Get("/:documentName/*", func(ctx fiber.Ctx) error {
+		ctx.Status(fiber.StatusNotFound)
+
+		return ctx.SendFile("index.html", fiber.SendFile{
+			FS: www.Bundle(),
+		})
+	})
 
 	log.Info("Listening on ", addressEnv, ":", portEnv)
 
@@ -66,87 +75,59 @@ func getEnv(key string, defaultValue interface{}) interface{} {
 	if value, exists := os.LookupEnv(key); exists {
 		switch defaultValue.(type) {
 		case int8:
-			{
-				if intValue, err := strconv.ParseInt(value, 10, 8); err == nil {
-					return int8(intValue)
-				}
+			if intValue, err := strconv.ParseInt(value, 10, 8); err == nil {
+				return int8(intValue)
 			}
 		case int16:
-			{
-				if intValue, err := strconv.ParseInt(value, 10, 16); err == nil {
-					return int16(intValue)
-				}
+			if intValue, err := strconv.ParseInt(value, 10, 16); err == nil {
+				return int16(intValue)
 			}
 		case int32:
-			{
-				if intValue, err := strconv.ParseInt(value, 10, 32); err == nil {
-					return int32(intValue)
-				}
+			if intValue, err := strconv.ParseInt(value, 10, 32); err == nil {
+				return int32(intValue)
 			}
 		case int64:
-			{
-				if intValue, err := strconv.ParseInt(value, 10, 64); err == nil {
-					return int(intValue)
-				}
+			if intValue, err := strconv.ParseInt(value, 10, 64); err == nil {
+				return int(intValue)
 			}
 		case int:
-			{
-				if intValue, err := strconv.Atoi(value); err == nil {
-					return intValue
-				}
+			if intValue, err := strconv.Atoi(value); err == nil {
+				return intValue
 			}
 		case uint8:
-			{
-				if uintValue, err := strconv.ParseUint(value, 10, 8); err == nil {
-					return uint8(uintValue)
-				}
+			if uintValue, err := strconv.ParseUint(value, 10, 8); err == nil {
+				return uint8(uintValue)
 			}
 		case uint16:
-			{
-				if uintValue, err := strconv.ParseUint(value, 10, 16); err == nil {
-					return uint16(uintValue)
-				}
+			if uintValue, err := strconv.ParseUint(value, 10, 16); err == nil {
+				return uint16(uintValue)
 			}
 		case uint32:
-			{
-				if uintValue, err := strconv.ParseUint(value, 10, 32); err == nil {
-					return uint32(uintValue)
-				}
+			if uintValue, err := strconv.ParseUint(value, 10, 32); err == nil {
+				return uint32(uintValue)
 			}
 		case uint64:
-			{
-				if uintValue, err := strconv.ParseUint(value, 10, 64); err == nil {
-					return uintValue
-				}
+			if uintValue, err := strconv.ParseUint(value, 10, 64); err == nil {
+				return uintValue
 			}
 		case uint:
-			{
-				if uintValue, err := strconv.ParseUint(value, 10, 64); err == nil {
-					return uint(uintValue)
-				}
+			if uintValue, err := strconv.ParseUint(value, 10, 64); err == nil {
+				return uint(uintValue)
 			}
 		case float32:
-			{
-				if floatValue, err := strconv.ParseFloat(value, 32); err == nil {
-					return float32(floatValue)
-				}
+			if floatValue, err := strconv.ParseFloat(value, 32); err == nil {
+				return float32(floatValue)
 			}
 		case float64:
-			{
-				if floatValue, err := strconv.ParseFloat(value, 64); err == nil {
-					return floatValue
-				}
+			if floatValue, err := strconv.ParseFloat(value, 64); err == nil {
+				return floatValue
 			}
 		case bool:
-			{
-				if boolValue, err := strconv.ParseBool(value); err == nil {
-					return boolValue
-				}
+			if boolValue, err := strconv.ParseBool(value); err == nil {
+				return boolValue
 			}
 		case string:
-			{
-				return value
-			}
+			return value
 		}
 
 		log.Warn(fmt.Sprintf("Unexpected value for env \"%s\": got \"%s\", falling back to default...", key, value))

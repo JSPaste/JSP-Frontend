@@ -9,7 +9,7 @@
 #RUN apk add --no-cache go-task
 #RUN go-task install-www build-www
 
-FROM docker.io/library/alpine:3.21 AS builder-server
+FROM docker.io/library/golang:1.23-alpine AS builder-server
 WORKDIR /build/
 
 #COPY --from=builder-www /build/www/dist/ ./www/dist/
@@ -19,14 +19,19 @@ COPY ./www/dist/ ./www/dist/
 COPY ./www/bundle.go ./www/bundle.go
 COPY --exclude=./www/ . ./
 
-RUN apk add --no-cache go go-task
+RUN apk add --no-cache go-task
 RUN go-task install-server build-server
 
-FROM docker.io/library/alpine:3.21
-WORKDIR /frontend/
+RUN addgroup jspaste && \
+    adduser -G jspaste -u 17777 -s /bin/false -D jspaste && \
+    grep jspaste /etc/passwd > /tmp/.frontend.passwd
 
-RUN adduser -D -h /frontend jspaste && \
-    chown jspaste:jspaste /frontend/
+FROM scratch
+WORKDIR /frontend/
+USER jspaste:jspaste
+
+COPY --from=builder-server /tmp/.frontend.passwd /etc/passwd
+COPY --from=builder-server /etc/group /etc/group
 
 COPY --chown=jspaste:jspaste --from=builder-server /build/dist/server ./
 COPY --chown=jspaste:jspaste --from=builder-server /build/LICENSE ./
@@ -37,8 +42,8 @@ LABEL org.opencontainers.image.url="https://jspaste.eu" \
       org.opencontainers.image.description="The frontend for JSPaste" \
       org.opencontainers.image.licenses="EUPL-1.2"
 
-USER jspaste
-
 EXPOSE 3000
 
-ENTRYPOINT ["./server"]
+ENV ADDRESS=0.0.0.0
+
+ENTRYPOINT ["/frontend/server"]
