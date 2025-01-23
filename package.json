@@ -48,7 +48,7 @@
 		"@codemirror/state": "^6.5.0",
 		"@codemirror/view": "^6.36.0",
 		"@solid-primitives/media": "~2.3.0",
-		"@solid-primitives/scheduled": "~1.4.0",
+		"@solid-primitives/scheduled": "~1.5.0",
 		"@solid-primitives/storage": "~4.2.0",
 		"@solidjs/router": "~0.15.0",
 		"@tabler/icons-solidjs": "^3.28.0",
