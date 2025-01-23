@@ -56,8 +56,12 @@ jobs:
       - name: Run lint
         run: bun --cwd=./www/ run lint
 
-      - name: Run dev
-        run: bun --cwd=./www/ run dev && exit
+      - name: Test run dev "www/"
+        run: |
+          bun --cwd=./www/ run dev &
+          SERVER_PID=$!
+          sleep 5
+          kill $SERVER_PID
 
       - name: Build "www/"
         run: task build-www
@@ -65,5 +69,9 @@ jobs:
       - name: Build server
         run: task build-server
 
-      - name: Run server
-        run: ./dist/server && exit
+      - name: Test run server
+        run: |
+          ./dist/server &
+          SERVER_PID=$!
+          sleep 5
+          kill $SERVER_PID
