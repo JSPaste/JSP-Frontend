@@ -55,7 +55,7 @@ jobs:
 
       - name: Test run dev "www/"
         run: |
-          bun --cwd=./www/ run dev &
+          task dev-www &
           SERVER_PID=$!
           sleep 5
           kill $SERVER_PID
