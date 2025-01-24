@@ -21,36 +21,19 @@ func main() {
 	}
 	log.SetLevel(log.Level(logLevelEnv))
 
-	addressEnv := getEnv("ADDRESS", "127.0.0.1").(string)
+	hostnameEnv := getEnv("HOSTNAME", "127.0.0.1").(string)
 	portEnv := getEnv("PORT", uint16(3000)).(uint16)
 
 	server := fiber.New(fiber.Config{
-		StrictRouting: false,
+		StrictRouting: true,
 		GETOnly:       true,
-		ColorScheme: fiber.Colors{
-			Black:   "\x1b[90m",
-			Red:     "\x1b[38;2;239;84;84m",
-			Green:   "\x1b[38;2;112;239;84m",
-			Yellow:  "\x1b[38;2;239;213;84m",
-			Blue:    "\x1b[38;2;89;84;239m",
-			Magenta: "\x1b[38;2;239;84;213m",
-			Cyan:    "\x1b[38;2;84;239;239m",
-			White:   "\x1b[97m",
-			Reset:   "\x1b[0m",
-		},
 	})
 
 	server.Use(static.New("", static.Config{
 		FS: www.Bundle(),
 	}))
 
-	server.Get("/:documentName", func(ctx fiber.Ctx) error {
-		return ctx.SendFile("index.html", fiber.SendFile{
-			FS: www.Bundle(),
-		})
-	})
-
-	server.Get("/:documentName/*", func(ctx fiber.Ctx) error {
+	server.Get("/404", func(ctx fiber.Ctx) error {
 		ctx.Status(fiber.StatusNotFound)
 
 		return ctx.SendFile("index.html", fiber.SendFile{
@@ -58,9 +41,15 @@ func main() {
 		})
 	})
 
-	log.Info("Listening on ", addressEnv, ":", portEnv)
+	server.Get("/*", func(ctx fiber.Ctx) error {
+		return ctx.SendFile("index.html", fiber.SendFile{
+			FS: www.Bundle(),
+		})
+	})
 
-	err := server.Listen(fmt.Sprint(addressEnv, ":", portEnv), fiber.ListenConfig{
+	log.Info("Listening on ", hostnameEnv, ":", portEnv)
+
+	err := server.Listen(fmt.Sprint(hostnameEnv, ":", portEnv), fiber.ListenConfig{
 		DisableStartupMessage: true,
 		EnablePrefork:         false,
 		EnablePrintRoutes:     false,

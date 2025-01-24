@@ -2,9 +2,11 @@ version: '3'
 
 tasks:
   default:
-    - task: install
-    - task: build
+    silent: true
+    cmds:
+      - echo "See all tasks with --list-all"
 
+  ### BUILD
   build:
     - task: build-www
     - task: build-server
@@ -15,21 +17,23 @@ tasks:
 
   build-www:
     cmds:
-      - bun --cwd=./www/ run build
+      - task: x-build-www-remove-dist
+      - bun --cwd=./www/ vite build
 
-  clean:
-    - task: clean-server
-    - task: clean-www
-
-  clean-server:
+  build-www-debug:
     cmds:
-      - bun exec "rm -rf ./dist/"
-      - go clean
+      - task: x-build-www-remove-dist
+      - NODE_ENV=development bun --cwd=./www/ vite build
 
-  clean-www:
+  x-build-www-remove-dist:
+    internal: true
     cmds:
       - bun --cwd=./www/ exec "rm -rf ./dist/"
-      - bun --cwd=./www/ exec "rm -rf ./node_modules/"
+
+  ### CLEAN
+  clean:
+    - task: clean-www
+    - task: clean-server
 
   clean-git:
     cmds:
@@ -49,6 +53,37 @@ tasks:
     cmds:
       - git clean -d -x -i
 
+  clean-server:
+    cmds:
+      - bun exec "rm -rf ./dist/"
+      - go clean
+
+  clean-www:
+    cmds:
+      - task: x-build-www-remove-dist
+      - bun --cwd=./www/ exec "rm -rf ./node_modules/"
+      # FIXME: rollup-plugin-visualizer issue
+      - bun --cwd=./www/ exec "rm -f bundle.html"
+
+  dev-www:
+    cmds:
+      - bun --cwd=./www/ vite dev
+
+  ### FIX
+  fix:
+    - task: fix-www
+    - task: fix-server
+
+  fix-server:
+    cmds:
+      - go fmt
+
+  fix-www:
+    cmds:
+      - bun --cwd=./www/ biome check --write
+      - bun --cwd=./www/ sort-package-json --quiet
+
+  ### INSTALL
   install:
     - task: install-www
     - task: install-server
@@ -65,6 +100,29 @@ tasks:
     cmds:
       - bun --cwd=./www/ install --frozen-lockfile
 
+  ### LINT
+  lint:
+    - task: lint-www
+    - task: lint-server
+
+  lint-server:
+    cmds:
+      - golangci-lint run
+
+  lint-www:
+    cmds:
+      - bun --cwd=./www/ biome lint
+      - bun --cwd=./www/ tsc --noEmit
+
+  start-server:
+    cmds:
+      - go run ./server.go
+
+  start-www:
+    cmds:
+      - bun --cwd=./www/ vite preview
+
+  ### TIDY
   tidy:
     - task: tidy-www
     - task: tidy-server
