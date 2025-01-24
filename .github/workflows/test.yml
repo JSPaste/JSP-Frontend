@@ -54,7 +54,7 @@ jobs:
         run: task install-www-ci
 
       - name: Run lint
-        run: bun --cwd=./www/ run lint
+        run: task lint
 
       - name: Test run dev "www/"
         run: |
