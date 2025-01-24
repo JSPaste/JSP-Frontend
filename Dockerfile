@@ -12,12 +12,16 @@
 FROM docker.io/library/golang:1.23-alpine AS builder-server
 WORKDIR /build/
 
+# FIXME: Uncomment when vite build is fixed
 #COPY --from=builder-www /build/www/dist/ ./www/dist/
 #COPY --from=builder-www /build/www/bundle.go ./www/bundle.go
 #COPY --from=builder-www --exclude=./www/ /build/. ./
-COPY ./www/dist/ ./www/dist/
-COPY ./www/bundle.go ./www/bundle.go
-COPY --exclude=./www/ . ./
+
+# TODO: Uncomment when CI updates to buildah >=v1.38.0
+#COPY ./www/dist/ ./www/dist/
+#COPY ./www/bundle.go ./www/bundle.go
+#COPY --exclude=./www/ . ./
+COPY . ./
 
 RUN apk add --no-cache go-task
 RUN go-task install-server build-server
