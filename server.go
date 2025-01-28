@@ -14,15 +14,15 @@ import (
 func main() {
 	_ = godotenv.Load()
 
-	logLevelEnv := getEnv("LOGLEVEL", uint8(2)).(uint8)
-	// fatal & panic logging should always be enabled
-	if logLevelEnv > 4 {
-		logLevelEnv = 4
+	verboseEnv := getEnv("JSP_VERBOSE", false).(bool)
+	if verboseEnv {
+		log.SetLevel(log.LevelTrace)
+	} else {
+		log.SetLevel(log.LevelInfo)
 	}
-	log.SetLevel(log.Level(logLevelEnv))
 
-	hostnameEnv := getEnv("HOSTNAME", "127.0.0.1").(string)
-	portEnv := getEnv("PORT", uint16(3000)).(uint16)
+	bindAddressEnv := getEnv("JSP_BIND_ADDRESS", "localhost").(string)
+	portEnv := getEnv("JSP_PORT", uint16(3000)).(uint16)
 
 	server := fiber.New(fiber.Config{
 		StrictRouting: true,
@@ -30,7 +30,8 @@ func main() {
 	})
 
 	server.Use(static.New("", static.Config{
-		FS: www.Bundle(),
+		FS:       www.Bundle(),
+		Compress: true,
 	}))
 
 	server.Get("/404", func(ctx fiber.Ctx) error {
@@ -47,17 +48,13 @@ func main() {
 		})
 	})
 
-	log.Info("Listening on ", hostnameEnv, ":", portEnv)
+	log.Info("Listening on ", bindAddressEnv, ":", portEnv)
 
-	err := server.Listen(fmt.Sprint(hostnameEnv, ":", portEnv), fiber.ListenConfig{
+	log.Fatal(server.Listen(fmt.Sprint(bindAddressEnv, ":", portEnv), fiber.ListenConfig{
 		DisableStartupMessage: true,
 		EnablePrefork:         false,
 		EnablePrintRoutes:     false,
-	})
-
-	if err != nil {
-		log.Fatal("Can't start Frontend server:", err)
-	}
+	}))
 }
 
 func getEnv(key string, defaultValue interface{}) interface{} {
