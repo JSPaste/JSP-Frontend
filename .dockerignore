@@ -9,7 +9,7 @@
 
 # WWW
 !/www/**
-#/www/dist/
-#/www/node_modules/
-## FIXME: why
-#/www/bundle.html
+/www/dist/
+/www/node_modules/
+# FIXME: why
+/www/bundle.html
