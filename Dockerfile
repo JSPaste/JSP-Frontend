@@ -48,6 +48,6 @@ LABEL org.opencontainers.image.url="https://jspaste.eu" \
 
 EXPOSE 3000
 
-ENV ADDRESS=0.0.0.0
+ENV JSP_BIND_ADDRESS=[::]
 
 ENTRYPOINT ["/frontend/server"]
