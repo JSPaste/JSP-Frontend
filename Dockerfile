@@ -1,27 +1,24 @@
-# Required to build "www" locally before building the image container: "task install-www build-www" or "bun run build"
+FROM docker.io/oven/bun:1-alpine AS builder-www
+WORKDIR /build/
 
-# FIXME: Vite failed to build: undefined ?
-#FROM docker.io/oven/bun:1-alpine AS builder-www
-#WORKDIR /build/
-#
-#COPY . ./
-#
-#RUN apk add --no-cache go-task
-#RUN go-task install-www build-www
+# TODO: Still on Alpine 3.20, so only golang 1.22 is available
+COPY --from=docker.io/library/golang:1.23-alpine /usr/local/go/ /usr/local/go/
+COPY . ./
+
+ENV PATH="/usr/local/go/bin:${PATH}"
+
+# Vite requires Node.js on build process
+RUN apk add --no-cache go-task nodejs
+RUN go-task install-www build-www
 
 FROM docker.io/library/golang:1.23-alpine AS builder-server
 WORKDIR /build/
 
-# FIXME: Uncomment when vite build is fixed
+# TODO: Uncomment when CI updates to buildah >=v1.38.0
 #COPY --from=builder-www /build/www/dist/ ./www/dist/
 #COPY --from=builder-www /build/www/bundle.go ./www/bundle.go
 #COPY --from=builder-www --exclude=./www/ /build/. ./
-
-# TODO: Uncomment when CI updates to buildah >=v1.38.0
-#COPY ./www/dist/ ./www/dist/
-#COPY ./www/bundle.go ./www/bundle.go
-#COPY --exclude=./www/ . ./
-COPY . ./
+COPY --from=builder-www /build/. ./
 
 RUN apk add --no-cache go-task
 RUN go-task install-server build-server
