@@ -1,5 +1,5 @@
 import { IconCode, IconCrane } from '@tabler/icons-solidjs';
-import HeaderLabel from '#component/HeaderLabel';
+import HeaderLabel from '#component/HeaderLabel.tsx';
 import { getEditorContext } from '#util/getEditorContext.ts';
 import { language } from '#util/langs.ts';
 
