@@ -17,4 +17,4 @@ USER nonroot
 
 EXPOSE 3000
 
-ENTRYPOINT ["bun", "run", "./server/index.js"]
+ENTRYPOINT ["bun", "run", "/frontend/index.js"]

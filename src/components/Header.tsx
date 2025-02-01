@@ -1,18 +1,15 @@
 import { IconCode, IconCrane } from '@tabler/icons-solidjs';
-import HeaderLabel from '@x-component/HeaderLabel';
-import type { Cursor } from '@x-component/screens/Editor';
-import { language } from '@x-util/store';
-import type { Accessor } from 'solid-js';
+import HeaderLabel from '#component/HeaderLabel';
+import { getEditorContext } from '#util/getEditorContext.ts';
+import { language } from '#util/langs.ts';
 
-type HeaderProps = {
-	cursor: Accessor<Cursor>;
-};
+export default function Header() {
+	const ctx = getEditorContext();
 
-export default function Header(props: HeaderProps) {
 	return (
 		<div class='flex min-h-6 pl-2 pr-2'>
 			<HeaderLabel
-				label={`Ln ${props.cursor().line.toString().padStart(2, '0')} Col ${props.cursor().column.toString().padStart(2, '0')}`}
+				label={`Ln ${ctx.cursor().line.toString().padStart(2, '0')} Col ${ctx.cursor().column.toString().padStart(2, '0')}`}
 			/>
 			<HeaderLabel label={`Lang ${language()}`} />
 			<span class='grow' />

@@ -1,7 +1,7 @@
 import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { bracketMatching, defaultHighlightStyle, indentOnInput, syntaxHighlighting } from '@codemirror/language';
-import { Compartment, EditorState } from '@codemirror/state';
+import { EditorState } from '@codemirror/state';
 import {
 	EditorView,
 	crosshairCursor,
@@ -17,50 +17,51 @@ import {
 } from '@codemirror/view';
 import { debounce } from '@solid-primitives/scheduled';
 import { hyperLinkExtension, hyperLinkStyle } from '@uiw/codemirror-extensions-hyper-link';
-import type { Cursor } from '@x-component/screens/Editor';
-import { getLanguage, language, theme } from '@x-util/store';
-import { editorThemes } from '@x-util/themes';
-import { type Accessor, type Setter, createEffect, createSignal, on, onCleanup, onMount } from 'solid-js';
+import { createSignal, onCleanup, onMount } from 'solid-js';
+import { extensionLoader } from '#util/extensionLoader.ts';
+import { getEditorContext } from '#util/getEditorContext.ts';
+import { langs, language } from '#util/langs.ts';
+import { lazyExtensionLoader } from '#util/lazyExtensionLoader.ts';
+import { editorContent, setEditorContent, theme } from '#util/persistence.ts';
+import { editorThemes } from '#util/themes';
 
-type EditorProps = {
-	enableEdit: boolean;
-	isEditing: Accessor<boolean>;
-	setCursor: Setter<Cursor>;
-	setValue: Setter<string>;
-	value: Accessor<string>;
-};
+export default function Editor() {
+	const ctx = getEditorContext();
 
-export default function Editor(props: EditorProps) {
 	const [container, setContainer] = createSignal<HTMLDivElement>();
 	const [editorView, setEditorView] = createSignal<EditorView>();
 
-	const readOnlyCompartment = new Compartment();
-	const themeCompartment = new Compartment();
-	const languageCompartment = new Compartment();
-
-	const updateCursorInformation = debounce(() => {
+	const updateCursor = debounce(() => {
 		const view = editorView();
 
 		if (view) {
 			const { from } = view.state.selection.main;
 			const cursorPosition = view.state.doc.lineAt(from);
 
-			props.setCursor({
+			ctx.setCursor({
 				line: cursorPosition.number,
 				column: from - cursorPosition.from + 1
 			});
 		}
 	}, 200);
 
-	const setValue = debounce((value: string) => {
-		props.setValue(value);
+	const saveEditorContent = debounce(() => {
+		const view = editorView();
+
+		if (view) {
+			setEditorContent(view.state.doc.toString());
+		}
 	}, 500);
 
-	onMount(async () => {
+	extensionLoader(() => editorThemes[theme()], editorView);
+	extensionLoader(() => EditorState.readOnly.of(ctx.editable() && !ctx.writing()), editorView);
+	lazyExtensionLoader(() => langs[language()](), editorView);
+
+	onMount(() => {
 		const currentView = new EditorView({
 			parent: container(),
 			state: EditorState.create({
-				doc: props.value(),
+				doc: editorContent(),
 				extensions: [
 					placeholder(
 						"Start writing here! When you're done, hit the save button to generate a unique URL with your content."
@@ -79,11 +80,8 @@ export default function Editor(props: EditorProps) {
 					crosshairCursor(),
 					highlightActiveLine(),
 					keymap.of([...closeBracketsKeymap, ...defaultKeymap, ...historyKeymap]),
-					themeCompartment.of(editorThemes[theme()]),
-					languageCompartment.of(await getLanguage()),
 					hyperLinkExtension(),
 					hyperLinkStyle,
-					readOnlyCompartment.of(EditorState.readOnly.of(props.enableEdit && !props.isEditing())),
 					EditorView.theme({
 						'&': {
 							height: '100%'
@@ -97,12 +95,12 @@ export default function Editor(props: EditorProps) {
 					}),
 					EditorView.contentAttributes.of({ 'data-lt-active': 'false' }),
 					EditorView.updateListener.of((vu) => {
-						if (vu.geometryChanged) {
-							updateCursorInformation();
+						if (vu.selectionSet) {
+							updateCursor();
 						}
 
 						if (vu.docChanged) {
-							setValue(vu.state.doc.toString());
+							saveEditorContent();
 						}
 					})
 				]
@@ -111,38 +109,6 @@ export default function Editor(props: EditorProps) {
 
 		setEditorView(currentView);
 	});
-
-	createEffect(
-		on([props.isEditing], (isEditing) => {
-			editorView()?.dispatch({
-				effects: readOnlyCompartment.reconfigure(EditorState.readOnly.of(props.enableEdit && !isEditing))
-			});
-		})
-	);
-
-	createEffect(
-		on(
-			theme,
-			(theme) => {
-				editorView()?.dispatch({
-					effects: themeCompartment.reconfigure(editorThemes[theme])
-				});
-			},
-			{ defer: true }
-		)
-	);
-
-	createEffect(
-		on(
-			language,
-			async () => {
-				editorView()?.dispatch({
-					effects: languageCompartment.reconfigure(await getLanguage())
-				});
-			},
-			{ defer: true }
-		)
-	);
 
 	onCleanup(() => {
 		editorView()?.destroy();

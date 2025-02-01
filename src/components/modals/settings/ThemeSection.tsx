@@ -1,9 +1,9 @@
 import { createBreakpoints } from '@solid-primitives/media';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-solidjs';
-import { breakpoints } from '@x-util/breakpoints';
-import { setTheme, theme } from '@x-util/store';
-import { type ThemeKeys, Themes } from '@x-util/themes';
 import { For, createEffect, createSignal } from 'solid-js';
+import { breakpoints } from '#util/breakpoints';
+import { setTheme, theme } from '#util/persistence.ts';
+import { type ThemeKeys, Themes } from '#util/themes';
 
 export default function ThemeSection() {
 	const matches = createBreakpoints(breakpoints);
