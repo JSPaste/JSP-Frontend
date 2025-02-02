@@ -7,7 +7,7 @@ const Footer = lazy(() => import('#component/Footer.tsx'));
 
 export default function EditorScreen() {
 	return (
-		/* TODO: Overflows when width is over 1024px */
+		/* FIXME: Overflows when width is over 1024px */
 		<div class='flex flex-col h-lvh overflow-hidden'>
 			<Header />
 			<Suspense fallback={<GenericFallback />}>

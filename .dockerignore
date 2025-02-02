@@ -11,5 +11,5 @@
 !/www/**
 /www/dist/
 /www/node_modules/
-# FIXME: why
+# TODO: rollup-plugin-visualizer issue
 /www/bundle.html

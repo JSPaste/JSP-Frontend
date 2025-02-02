@@ -6,7 +6,7 @@ type HeaderLabelProps = {
 	onClick?: () => void;
 };
 
-// TODO: Deprecated buttons on new design, don't use this anymore
+// Deprecated buttons on new design, don't use this anymore
 export default function HeaderLabel(props: HeaderLabelProps) {
 	return (
 		<div

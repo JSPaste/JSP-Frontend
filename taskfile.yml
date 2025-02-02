@@ -63,7 +63,7 @@ tasks:
     cmds:
       - task: x-build-www-remove-dist
       - bun --cwd=./www/ exec "rm -rf ./node_modules/"
-      # FIXME: rollup-plugin-visualizer issue
+      # TODO: rollup-plugin-visualizer issue
       - bun --cwd=./www/ exec "rm -f bundle.html"
 
   dev-www:
