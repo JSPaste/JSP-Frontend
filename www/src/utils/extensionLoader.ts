@@ -2,12 +2,7 @@ import { Compartment, type Extension, StateEffect } from '@codemirror/state';
 import type { EditorView } from '@codemirror/view';
 import { type Accessor, createEffect, on } from 'solid-js';
 
-export type CompartmentReconfigurationCallback = (extension: Extension) => void;
-
-export function extensionLoader(
-	extension: Accessor<Extension | undefined> | Extension,
-	view: Accessor<EditorView | undefined>
-): CompartmentReconfigurationCallback {
+export function extensionLoader(extension: Accessor<Extension | undefined>, view: Accessor<EditorView | undefined>) {
 	const compartment = new Compartment();
 
 	const reconfigure = (extension: Extension) => {
@@ -16,11 +11,9 @@ export function extensionLoader(
 		});
 	};
 
-	const $extension = typeof extension === 'function' ? extension : () => extension;
-
 	createEffect(
 		on(
-			[view, $extension],
+			[view, extension],
 			([view, extension]) => {
 				if (view && extension) {
 					if (compartment.get(view.state)) {
@@ -35,6 +28,4 @@ export function extensionLoader(
 			{ defer: true }
 		)
 	);
-
-	return reconfigure;
 }

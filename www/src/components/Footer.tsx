@@ -1,9 +1,11 @@
 import { useParams } from '@solidjs/router';
 import { IconAlignJustified, IconDeviceFloppy, IconPencil, IconSettings } from '@tabler/icons-solidjs';
+import { lazy } from 'solid-js';
 import FooterButton from '#component/FooterButton.tsx';
-import Settings from '#component/modals/settings/Settings.tsx';
 import { getEditorContext } from '#util/getEditorContext.ts';
 import { editorContent } from '#util/persistence.ts';
+
+const Settings = lazy(() => import('#component/modals/settings/Settings.tsx'));
 
 export default function Footer() {
 	const ctx = getEditorContext();

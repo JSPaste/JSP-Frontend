@@ -115,5 +115,5 @@ export default function Editor() {
 		setEditorView(undefined);
 	});
 
-	return <div ref={setContainer} class='grow overflow-hidden' />;
+	return <div ref={setContainer} class='grow' />;
 }

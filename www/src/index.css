@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+	--color-\*: initial;
+}
+
 @plugin "daisyui" {
 	/* biome-ignore lint/correctness/noUnknownProperty: Missing proper Tailwind CSS 4 support */
 	logs: false;
