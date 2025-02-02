@@ -42,6 +42,10 @@ func main() {
 			requestHandler(ctx)
 		}
 
+		if path == "/404" {
+			ctx.Response.SetStatusCode(fasthttp.StatusNotFound)
+		}
+
 		path = string(ctx.Path())
 
 		if strings.HasPrefix(path, "/assets/") {
