@@ -43,6 +43,6 @@ USER jspaste:jspaste
 
 EXPOSE 3000
 
-ENV JSP_BIND_ADDRESS=[::]
+ENV JSPF_BIND_ADDRESS=[::]
 
 ENTRYPOINT ["/frontend/server"]
