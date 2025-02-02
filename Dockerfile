@@ -27,15 +27,20 @@ RUN addgroup jspaste && \
     adduser -G jspaste -u 17777 -s /bin/false -D jspaste && \
     grep jspaste /etc/passwd > /tmp/.frontend.passwd
 
-FROM scratch
+# FIXME: Test Alpine for console output params
+FROM docker.io/library/alpine:3.21
+#FROM scratch
 WORKDIR /frontend/
-USER jspaste:jspaste
+#USER jspaste:jspaste
 
-COPY --from=builder-server /tmp/.frontend.passwd /etc/passwd
-COPY --from=builder-server /etc/group /etc/group
+# FIXME: Test Alpine for console output params
+#COPY --from=builder-server /tmp/.frontend.passwd /etc/passwd
+#COPY --from=builder-server /etc/group /etc/group
 
-COPY --chown=jspaste:jspaste --from=builder-server /build/dist/server ./
-COPY --chown=jspaste:jspaste --from=builder-server /build/LICENSE ./
+# --chown=jspaste:jspaste
+COPY --from=builder-server /build/dist/server ./
+# --chown=jspaste:jspaste
+COPY --from=builder-server /build/LICENSE ./
 
 LABEL org.opencontainers.image.url="https://jspaste.eu" \
       org.opencontainers.image.source="https://github.com/jspaste/frontend" \

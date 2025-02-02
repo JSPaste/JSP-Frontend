@@ -3,7 +3,6 @@ package main
 import (
 	"compress/gzip"
 	"github.com/andybalholm/brotli"
-	"github.com/klauspost/compress/zstd"
 	"io"
 	"log"
 	"os"
@@ -41,21 +40,15 @@ func compressFile(filename string) error {
 		writer    func(io.Writer) (io.WriteCloser, error)
 	}{
 		{
-			".fiber.gz",
+			".fasthttp.gz",
 			func(writer io.Writer) (io.WriteCloser, error) {
 				return gzip.NewWriterLevel(writer, gzip.BestCompression)
 			},
 		},
 		{
-			".fiber.br",
+			".fasthttp.br",
 			func(writer io.Writer) (io.WriteCloser, error) {
 				return brotli.NewWriterLevel(writer, brotli.BestCompression), nil
-			},
-		},
-		{
-			".fiber.zst",
-			func(writer io.Writer) (io.WriteCloser, error) {
-				return zstd.NewWriter(writer, zstd.WithEncoderLevel(zstd.SpeedBestCompression))
 			},
 		},
 	}

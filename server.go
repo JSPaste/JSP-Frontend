@@ -2,59 +2,73 @@ package main
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v3"
-	"github.com/gofiber/fiber/v3/log"
-	"github.com/gofiber/fiber/v3/middleware/static"
 	"github.com/joho/godotenv"
 	"github.com/jspaste/frontend/www"
+	"github.com/valyala/fasthttp"
+	"io"
+	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func main() {
 	_ = godotenv.Load()
 
-	verboseEnv := getEnv("JSP_VERBOSE", false).(bool)
-	if verboseEnv {
-		log.SetLevel(log.LevelTrace)
-	} else {
-		log.SetLevel(log.LevelInfo)
-	}
-
 	bindAddressEnv := getEnv("JSP_BIND_ADDRESS", "localhost").(string)
 	portEnv := getEnv("JSP_PORT", uint16(3000)).(uint16)
 
-	server := fiber.New(fiber.Config{
-		StrictRouting: true,
-		GETOnly:       true,
-	})
+	fs := &fasthttp.FS{
+		FS:              www.Bundle(),
+		Compress:        true,
+		CompressBrotli:  true,
+		AcceptByteRange: true,
+	}
 
-	server.Use(static.New("", static.Config{
-		FS:       www.Bundle(),
-		Compress: true,
-	}))
+	requestHandler := fs.NewRequestHandler()
 
-	server.Get("/404", func(ctx fiber.Ctx) error {
-		ctx.Status(fiber.StatusNotFound)
+	handler := func(ctx *fasthttp.RequestCtx) {
+		path := string(ctx.Path())
 
-		return ctx.SendFile("index.html", fiber.SendFile{
-			FS: www.Bundle(),
-		})
-	})
+		if path == "/" {
+			ctx.Request.SetRequestURI("/index.html")
+		}
 
-	server.Get("/*", func(ctx fiber.Ctx) error {
-		return ctx.SendFile("index.html", fiber.SendFile{
-			FS: www.Bundle(),
-		})
-	})
+		requestHandler(ctx)
 
-	log.Info("Listening on ", bindAddressEnv, ":", portEnv)
+		if ctx.Response.StatusCode() == fasthttp.StatusNotFound {
+			ctx.Request.SetRequestURI("/index.html")
+			ctx.Response.Header.Set("Content-Type", "text/html; charset=utf-8")
+			requestHandler(ctx)
+		}
 
-	log.Fatal(server.Listen(fmt.Sprint(bindAddressEnv, ":", portEnv), fiber.ListenConfig{
-		DisableStartupMessage: true,
-		EnablePrefork:         false,
-		EnablePrintRoutes:     false,
-	}))
+		path = string(ctx.Path())
+
+		if strings.HasPrefix(path, "/assets/") {
+			ctx.Response.Header.Set("Cache-Control", "max-age=31536000, public, immutable")
+		} else if strings.HasSuffix(path, ".html") {
+			ctx.Response.Header.Set("Cache-Control", "max-age=0, no-store")
+		} else {
+			ctx.Response.Header.Set("Cache-Control", "max-age=600, public, no-transform")
+		}
+
+		if len(ctx.Response.Header.Peek("Content-Encoding")) > 0 {
+			ctx.Response.Header.Set("Vary", "Accept-Encoding")
+		}
+
+		ctx.Response.Header.Del("Last-Modified")
+	}
+
+	server := &fasthttp.Server{
+		Logger:                log.New(io.Discard, "", 0),
+		Handler:               handler,
+		GetOnly:               true,
+		NoDefaultServerHeader: true,
+	}
+
+	fmt.Print("Listening on http://", bindAddressEnv, ":", portEnv, "\n")
+
+	log.Fatal(server.ListenAndServe(fmt.Sprint(bindAddressEnv, ":", portEnv)))
 }
 
 func getEnv(key string, defaultValue interface{}) interface{} {
@@ -116,7 +130,7 @@ func getEnv(key string, defaultValue interface{}) interface{} {
 			return value
 		}
 
-		log.Warn(fmt.Sprintf("Unexpected value for env \"%s\": got \"%s\", falling back to default...", key, value))
+		log.Printf("Unexpected value for env \"%s\": got \"%s\", falling back to default...", key, value)
 		return defaultValue
 	}
 
