@@ -23,30 +23,23 @@ COPY --from=builder-www /build/. ./
 RUN apk add --no-cache go-task
 RUN go-task install-server build-server
 
-RUN addgroup jspaste && \
-    adduser -G jspaste -u 17777 -s /bin/false -D jspaste && \
-    grep jspaste /etc/passwd > /tmp/.frontend.passwd
-
-# FIXME: Test Alpine for console output params
 FROM docker.io/library/alpine:3.21
-#FROM scratch
 WORKDIR /frontend/
-#USER jspaste:jspaste
 
-# FIXME: Test Alpine for console output params
-#COPY --from=builder-server /tmp/.frontend.passwd /etc/passwd
-#COPY --from=builder-server /etc/group /etc/group
+RUN addgroup jspaste && \
+    adduser -G jspaste -u 7777 -s /bin/false -D jspaste && \
+    chown jspaste:jspaste /frontend/
 
-# --chown=jspaste:jspaste
-COPY --from=builder-server /build/dist/server ./
-# --chown=jspaste:jspaste
-COPY --from=builder-server /build/LICENSE ./
+COPY --chown=jspaste:jspaste --from=builder-server /build/dist/server ./
+COPY --chown=jspaste:jspaste --from=builder-server /build/LICENSE ./
 
 LABEL org.opencontainers.image.url="https://jspaste.eu" \
       org.opencontainers.image.source="https://github.com/jspaste/frontend" \
       org.opencontainers.image.title="@jspaste/frontend" \
       org.opencontainers.image.description="The frontend for JSPaste" \
       org.opencontainers.image.licenses="EUPL-1.2"
+
+USER jspaste:jspaste
 
 EXPOSE 3000
 
