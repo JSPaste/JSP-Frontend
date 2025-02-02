@@ -15,8 +15,8 @@ import (
 func main() {
 	_ = godotenv.Load()
 
-	bindAddressEnv := getEnv("JSP_BIND_ADDRESS", "localhost").(string)
-	portEnv := getEnv("JSP_PORT", uint16(3000)).(uint16)
+	bindAddressEnv := getEnv("JSPF_BIND_ADDRESS", "localhost").(string)
+	portEnv := getEnv("JSPF_PORT", uint16(3000)).(uint16)
 
 	fs := &fasthttp.FS{
 		FS:              www.Bundle(),
