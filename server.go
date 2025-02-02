@@ -19,10 +19,9 @@ func main() {
 	portEnv := getEnv("JSPF_PORT", uint16(3000)).(uint16)
 
 	fs := &fasthttp.FS{
-		FS:              www.Bundle(),
-		Compress:        true,
-		CompressBrotli:  true,
-		AcceptByteRange: true,
+		FS:             www.Bundle(),
+		Compress:       true,
+		CompressBrotli: true,
 	}
 
 	requestHandler := fs.NewRequestHandler()
