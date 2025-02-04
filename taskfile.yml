@@ -1,0 +1,143 @@
+version: '3'
+
+tasks:
+  default:
+    silent: true
+    cmds:
+      - echo "See all tasks with --list-all"
+
+  ### BUILD
+  build:
+    - task: build-www
+    - task: build-server
+
+  build-server:
+    cmds:
+      - go build -o ./dist/server ./server.go
+
+  build-www:
+    cmds:
+      - task: x-build-www-remove-dist
+      - bun --cwd=./www/ vite build
+      - task: x-script-www-compress
+
+  build-www-debug:
+    cmds:
+      - task: x-build-www-remove-dist
+      - NODE_ENV=development bun --cwd=./www/ vite build
+
+  x-build-www-remove-dist:
+    internal: true
+    cmds:
+      - bun --cwd=./www/ exec "rm -rf ./dist/"
+
+  ### CLEAN
+  clean:
+    - task: clean-www
+    - task: clean-server
+
+  clean-git:
+    cmds:
+      - task: clean-git-untracked
+      - task: clean-git-gc
+      - task: clean-git-hooks
+
+  clean-git-gc:
+    cmds:
+      - git gc --aggressive --prune
+
+  clean-git-hooks:
+    cmds:
+      - bun exec "rm -rf ./.git/hooks/"
+
+  clean-git-untracked:
+    cmds:
+      - git clean -d -x -i
+
+  clean-server:
+    cmds:
+      - bun exec "rm -rf ./dist/"
+      - go clean
+
+  clean-www:
+    cmds:
+      - task: x-build-www-remove-dist
+      - bun --cwd=./www/ exec "rm -rf ./node_modules/"
+      # TODO: rollup-plugin-visualizer issue
+      - bun --cwd=./www/ exec "rm -f bundle.html"
+
+  dev-www:
+    cmds:
+      - bun --cwd=./www/ vite dev
+
+  ### FIX
+  fix:
+    - task: fix-www
+    - task: fix-server
+
+  fix-server:
+    cmds:
+      - go fmt
+
+  fix-www:
+    cmds:
+      - bun --cwd=./www/ biome check --write
+      - bun --cwd=./www/ sort-package-json --quiet
+
+  ### INSTALL
+  install:
+    - task: install-www
+    - task: install-server
+
+  install-server:
+    cmds:
+      - go mod download
+
+  install-www:
+    cmds:
+      - bun --cwd=./www/ install
+
+  install-www-ci:
+    cmds:
+      - bun --cwd=./www/ install --frozen-lockfile
+
+  ### LINT
+  lint:
+    - task: lint-www
+    - task: lint-server
+
+  lint-server:
+    cmds:
+      - golangci-lint run
+
+  lint-www:
+    cmds:
+      - bun --cwd=./www/ biome lint
+      - bun --cwd=./www/ tsc --noEmit
+
+  x-script-www-compress:
+    internal: true
+    cmds:
+      - go run ./www/scripts/compress.go
+
+  start-server:
+    cmds:
+      - go run ./server.go
+
+  start-www:
+    cmds:
+      - bun --cwd=./www/ vite preview
+
+  ### TIDY
+  tidy:
+    - task: tidy-www
+    - task: tidy-server
+
+  tidy-server:
+    cmds:
+      - go mod tidy
+
+  tidy-www:
+    cmds:
+      - bun --cwd=./www/ exec "rm -f bun.lock"
+      - bun --cwd=./www/ install -f
