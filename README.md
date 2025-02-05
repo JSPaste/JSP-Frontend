@@ -2,6 +2,17 @@
 
 This repository contains the frontend code for [JSPaste](https://jspaste.eu).
 
+## Supported Browsers
+
+In case you are using an older browser than the ones listed, please do not open issues about it.
+
+- Chromium >= 111
+- Firefox >= 113
+- Safari >= 16
+
+*Last checked commit
+[`50f1ee9`](https://github.com/jspaste/frontend/commit/50f1ee961a3325b85138e3b16f82befb3bf4a74b) on 7 January 2025*
+
 ## Setup
 
 ### Container
@@ -13,17 +24,6 @@ docker pull ghcr.io/jspaste/frontend:latest
 docker run --env-file=.env -d -p 127.0.0.1:3000:3000 \
   ghcr.io/jspaste/frontend:latest
 ```
-
-## Supported Browsers
-
-In case you are using an older browser than the ones listed, please do not open issues about it.
-
-- Chromium >= 111
-- Firefox >= 113
-- Safari >= 16
-
-*Last checked commit
-[`50f1ee9`](https://github.com/jspaste/frontend/commit/50f1ee961a3325b85138e3b16f82befb3bf4a74b) on 7 January 2025*
 
 ## Validate
 
@@ -56,7 +56,7 @@ To work on the project we need some tools..:
 
 And the dependencies of the Frontend itself..:
 
-```bash
+```shell
 task install
 ```
 
@@ -64,7 +64,7 @@ task install
 
 The project uses `task` to manage scripts. To list all available scripts, run the following command:
 
-```bash
+```shell
 task --list-all
 ```
 
@@ -72,7 +72,7 @@ In general, scripts are grouped by their use and by their granularity, meaning t
 run other scripts under its name to fulfil its function, in this case building the Frontend and compiling the server.
 This may not be desired in all cases, so it is recommended that scripts be run in a more specific way..:
 
-```bash
+```shell
 # Bad
 task build start-server
 
@@ -92,7 +92,7 @@ All scripts will run from any location within the project as if you were in the 
 
 Building the Frontend is very straightforward..:
 
-```bash
+```shell
 task build
 ```
 
@@ -100,7 +100,7 @@ It will prepare a standalone binary ready to be run at main directory in `dist/`
 
 You could also avoid constantly building the server and build only "www/" (website) or the other way around..:
 
-```bash
+```shell
 # Build the website
 task build-www
 # Or, build the server
@@ -118,13 +118,13 @@ task clean-git
 
 If for some reason you want to clear the entire project of dependencies and build remnants..:
 
-```bash
+```shell
 task clean
 ```
 
 You can also clean specific things..:
 
-```bash
+```shell
 # We clean "www/" and all build remnants
 task clean-www clean-dist install-www
 ```
