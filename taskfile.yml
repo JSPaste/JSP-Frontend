@@ -17,19 +17,14 @@ tasks:
 
   build-www:
     cmds:
-      - task: x-build-www-remove-dist
+      - task: clean-dist-www
       - bun --cwd=./www/ vite build
       - task: x-script-www-compress
 
   build-www-debug:
     cmds:
-      - task: x-build-www-remove-dist
+      - task: clean-dist-www
       - NODE_ENV=development bun --cwd=./www/ vite build
-
-  x-build-www-remove-dist:
-    internal: true
-    cmds:
-      - bun --cwd=./www/ exec "rm -rf ./dist/"
 
   ### CLEAN
   clean:
@@ -56,15 +51,27 @@ tasks:
 
   clean-server:
     cmds:
-      - bun exec "rm -rf ./dist/"
+      - task: clean-dist-server
       - go clean
 
   clean-www:
     cmds:
-      - task: x-build-www-remove-dist
+      - task: clean-dist-www
       - bun --cwd=./www/ exec "rm -rf ./node_modules/"
       # TODO: rollup-plugin-visualizer issue
       - bun --cwd=./www/ exec "rm -f bundle.html"
+
+  clean-dist:
+    - task: clean-dist-www
+    - task: clean-dist-server
+
+  clean-dist-server:
+    cmds:
+      - bun exec "rm -rf ./dist/"
+
+  clean-dist-www:
+    cmds:
+      - bun --cwd=./www/ exec "rm -rf ./dist/"
 
   dev-www:
     cmds:
