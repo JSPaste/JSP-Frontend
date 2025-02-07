@@ -69,7 +69,7 @@ func main() {
 		NoDefaultServerHeader: true,
 	}
 
-	fmt.Print("Listening on http://", bindAddressEnv, ":", portEnv, "\n")
+	log.Print("Listening on http://", bindAddressEnv, ":", portEnv, "\n")
 
 	log.Fatal(server.ListenAndServe(fmt.Sprint(bindAddressEnv, ":", portEnv)))
 }

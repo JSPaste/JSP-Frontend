@@ -17,7 +17,7 @@ func main() {
 		}
 
 		if !info.IsDir() {
-			matched, _ := regexp.MatchString(`\.(js|mjs|cjs|json|css|html|svg)$`, info.Name())
+			matched, _ := regexp.MatchString(`\.(css|html|js|json|svg|xml)$`, info.Name())
 			if matched {
 				if err := compressFile(path); err != nil {
 					return err
