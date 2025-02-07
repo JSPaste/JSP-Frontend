@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"github.com/tdewolff/minify/v2"
+	min "github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/css"
 	"github.com/tdewolff/minify/v2/html"
 	"github.com/tdewolff/minify/v2/js"
@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	m := minify.New()
+	m := min.New()
 
 	m.AddFunc(".css", css.Minify)
 	m.AddFunc(".html", html.Minify)
@@ -30,19 +30,21 @@ func main() {
 		}
 
 		if !info.IsDir() {
-			if err := minifyFile(m, path); err != nil {
+			if err := minify(m, path); err != nil {
 				return err
 			}
+
+			log.Print("Minified: ", path)
 		}
 
 		return nil
 	})
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
-func minifyFile(m *minify.M, path string) error {
+func minify(m *min.M, path string) error {
 	content, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -50,7 +52,7 @@ func minifyFile(m *minify.M, path string) error {
 
 	minified, err := m.Bytes(filepath.Ext(path), content)
 	if err != nil {
-		if errors.Is(err, minify.ErrNotExist) {
+		if errors.Is(err, min.ErrNotExist) {
 			return nil
 		}
 		return err
@@ -59,8 +61,6 @@ func minifyFile(m *minify.M, path string) error {
 	if err := os.WriteFile(path, minified, 0644); err != nil {
 		return err
 	}
-
-	log.Printf("Minified: %s", path)
 
 	return nil
 }
