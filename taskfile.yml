@@ -19,6 +19,7 @@ tasks:
     cmds:
       - task: clean-dist-www
       - bun --cwd=./www/ vite build
+      - task: x-script-www-minify
       - task: x-script-www-compress
 
   build-www-debug:
@@ -122,10 +123,15 @@ tasks:
       - bun --cwd=./www/ biome lint
       - bun --cwd=./www/ tsc --noEmit
 
+  x-script-www-minify:
+    internal: true
+    cmds:
+      - go run ./www/scripts/minify/main.go
+
   x-script-www-compress:
     internal: true
     cmds:
-      - go run ./www/scripts/compress.go
+      - go run ./www/scripts/compress/main.go
 
   start-server:
     cmds:
